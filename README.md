@@ -17,6 +17,14 @@ El panel reconoce los subagentes con estos tipos (archivos en `.claude/agents/` 
 | `critico-diseno` | Vados |
 | `escritor` | Kaio-sama |
 
+## Voces
+
+Cada personaje avisa con su voz cuando termina (`hooks/agente-termina.sh`, en `SubagentStop` y `Stop`; Whis cuando la respuesta trae la firma «(◕‿◕) Whis»). Si el reporte trae un bloqueo, suena la versión de alerta. Al delegar con transformación (`model: opus` o `effort` alto), el personaje grita al entrar (`hooks/transformacion.sh`).
+
+Los audios están en `hooks/voces/`. Para regenerarlos con Fish Audio: `FISH_API_KEY=... hooks/generar-voces.sh` (`-f` para sobrescribir); frases y voces en `hooks/voces.tsv` y `hooks/transformaciones.tsv`.
+
+Solo suena en macOS (`afplay` y `say`).
+
 ## Instalación
 
 En el prompt de una sesión de Claude Code en la terminal:

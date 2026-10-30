@@ -1,0 +1,13 @@
+# rol	nivel (ssj = Super Saiyan, blue = Super Saiyan Blue)	grito (se genera con la voz del rol en voces.tsv)
+frontend	ssj	¡Aaaaah! ¡Esto es un Super Saiyajin!
+frontend	blue	¡Super Saiyajin Blue! ¡Kame... hame... ha!
+backend	ssj	¡Soy el príncipe de los Saiyajin! ¡Super Saiyajin!
+backend	blue	¡Mi orgullo no tiene límites! ¡Super Saiyajin Blue!
+fullstack	ssj	¡Ya no voy a contenerme! ¡Super Saiyajin!
+fullstack	blue	¡Este es mi verdadero poder!
+devops	ssj	¡Me quito la capa con pesas! Ahora sí, en serio.
+devops	blue	¡Poder máximo! El fuerte no cae.
+qa	ssj	¡Por el futuro! ¡Super Saiyajin!
+qa	blue	¡Mi espada no va a fallar! ¡Super Saiyajin Blue!
+seguridad	blue	¡Golden Freezer! Ninguna debilidad sobrevive.
+arquitecto	blue	¡Hakai! Veamos qué diseño sobrevive.

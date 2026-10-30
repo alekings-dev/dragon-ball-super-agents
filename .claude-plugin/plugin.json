@@ -1,1 +1,1 @@
-{ "name": "equipo-dbs", "version": "0.1.1", "description": "Panel del equipo de agentes de Radar-social (Dragon Ball Super): quién trabaja, en qué y quién terminó", "types": "./types/index.d.ts" }
+{ "name": "equipo-dbs", "version": "0.2.0", "description": "Panel y voces del equipo de agentes de Radar-social (Dragon Ball Super): quién trabaja, en qué y quién terminó", "types": "./types/index.d.ts", "hooks": "./hooks/voces.json" }

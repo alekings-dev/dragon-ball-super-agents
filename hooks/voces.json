@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "SubagentStop": [ { "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/agente-termina.sh", "async": true, "timeout": 15 } ] } ],
+    "Stop": [ { "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/agente-termina.sh", "async": true, "timeout": 15 } ] } ],
+    "PreToolUse": [ { "matcher": "Agent|Task", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/transformacion.sh", "async": true, "timeout": 15 } ] } ]
+  }
+}
