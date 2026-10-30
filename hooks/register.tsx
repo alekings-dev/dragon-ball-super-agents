@@ -6,7 +6,7 @@ import type { Miembro } from '../types'
 const PANE = 'equipo-dbs'
 const miembros = atom({ plugin: 'equipo-dbs', key: 'miembros' } as const, [])
 
-// Rol (identificador del agente en .claude/agents/) → personaje y carita.
+// Rol (agente del plugin en agents/, sin el prefijo equipo-dbs:) → personaje y carita.
 const EQUIPO: Record<string, { nombre: string; cara: string }> = {
   producto: { nombre: 'Bulma', cara: '(＾▽＾)' },
   arquitecto: { nombre: 'Bills', cara: '(￣ー￣)' },
@@ -36,9 +36,10 @@ export const register: Register = on => {
         await update($, miembros, previos => {
           const porId = new Map(previos.map(m => [m.id, m]))
           for (const a of lista) {
-            if (!EQUIPO[a.type]) continue
+            const tipo = a.type.replace(/^equipo-dbs:/, '')
+            if (!EQUIPO[tipo]) continue
             const previo = porId.get(a.id)
-            porId.set(a.id, { id: a.id, tipo: a.type, tarea: a.description, estado: estadoDe(a.status), desde: previo?.desde ?? ahora })
+            porId.set(a.id, { id: a.id, tipo, tarea: a.description, estado: estadoDe(a.status), desde: previo?.desde ?? ahora })
           }
           return [...porId.values()].sort((x, y) => y.desde - x.desde).slice(0, 40)
         })

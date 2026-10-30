@@ -1,8 +1,13 @@
 # equipo-dbs
 
-Panel de Claude Code que muestra el equipo de agentes con personajes de Dragon Ball Super: quién trabaja, en qué y quién terminó.
+Equipo de agentes de Claude Code con personajes de Dragon Ball Super:
 
-El panel reconoce los subagentes con estos tipos (archivos en `.claude/agents/` del repo donde lo uses):
+- **Agentes** (`agents/`): 10 especialistas, `equipo-dbs:<rol>`.
+- **Skill** `equipo-dbs:resolver-issue`: Whis, el líder, toma una issue de Linear, la reparte en el equipo, integra y reporta.
+- **Panel** (`/equipo`): quién trabaja, en qué y quién terminó.
+- **Voces**: cada personaje avisa al terminar.
+
+Roles y personajes:
 
 | Tipo | Personaje |
 | --- | --- |
@@ -24,6 +29,46 @@ Cada personaje avisa con su voz cuando termina (`hooks/agente-termina.sh`, en `S
 Los audios están en `hooks/voces/`. Para regenerarlos con Fish Audio: `FISH_API_KEY=... hooks/generar-voces.sh` (`-f` para sobrescribir); frases y voces en `hooks/voces.tsv` y `hooks/transformaciones.tsv`.
 
 Solo suena en macOS (`afplay` y `say`).
+
+## Configurar un repo
+
+El equipo es genérico; lo propio de cada repo va en `.claude/equipo/proyecto.md` (versiónalo). Las lecciones que aprende cada rol se guardan en `.claude/equipo/bitacora/<rol>.md`. Plantilla:
+
+```markdown
+# Proyecto: <nombre>
+
+## Producto
+Qué es, para quién, tono de los textos.
+
+## Stack
+Carpetas, frameworks y comandos (tests, tipos, build, levantar local, e2e).
+
+## Git y PRs
+- Rama base: `<base>`.
+- Identidad de commits y prefijos de los mensajes.
+- La persona a cargo es <nombre>.
+
+## Linear
+Equipo, proyecto y prefijo de issues.
+
+## Límites
+Usuarios de prueba, cómo se lee producción.
+
+## Contexto
+Documentos que el líder debe revisar (informe UX, decisiones previas).
+
+## Verificaciones finales
+Comandos que corre el líder antes del PR.
+
+## Deploy
+Cómo verifica devops el deploy tras integrar.
+
+## Por rol
+### backend
+Patrones y carpetas propias. (Igual para otros roles si hace falta.)
+```
+
+Algunos agentes usan las herramientas MCP de Linear (`producto`, `critico-diseno`) y CodeGraph (`arquitecto`); sin esos servidores, trabajan sin ellas.
 
 ## Instalación
 

@@ -6,13 +6,14 @@ command -v say >/dev/null 2>&1 || exit 0
 dir=$(dirname "$0")
 input=$(cat)
 rol=$(printf '%s' "$input" | jq -r '.tool_input.subagent_type // ""' 2>/dev/null)
+rol=${rol#equipo-dbs:}
 modelo=$(printf '%s' "$input" | jq -r '.tool_input.model // ""' 2>/dev/null)
 esfuerzo=$(printf '%s' "$input" | jq -r '.tool_input.effort // ""' 2>/dev/null)
-[ -f "${CLAUDE_PROJECT_DIR:-.}/.claude/agents/$rol.md" ] || exit 0
+[ -f "$dir/../agents/$rol.md" ] || exit 0
 
 case "$esfuerzo" in
   high|xhigh|max) nivel=blue ;;
-  *) base=$(sed -n 's/^model: //p' "${CLAUDE_PROJECT_DIR:-.}/.claude/agents/$rol.md" | head -1)
+  *) base=$(sed -n 's/^model: //p' "$dir/../agents/$rol.md" | head -1)
      [ "$modelo" = opus ] && [ "$base" != opus ] && nivel=ssj || exit 0 ;;
 esac
 

@@ -1,1 +1,1 @@
-{ "name": "equipo-dbs", "version": "0.2.0", "description": "Panel y voces del equipo de agentes de Radar-social (Dragon Ball Super): quién trabaja, en qué y quién terminó", "types": "./types/index.d.ts", "hooks": "./hooks/voces.json" }
+{ "name": "equipo-dbs", "version": "0.3.0", "description": "Equipo de agentes de Claude Code con personajes de Dragon Ball Super: líder, especialistas, panel y voces", "types": "./types/index.d.ts", "hooks": "./hooks/voces.json" }

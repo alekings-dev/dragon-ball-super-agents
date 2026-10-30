@@ -5,6 +5,7 @@
 command -v say >/dev/null 2>&1 || exit 0
 input=$(cat)
 agente=$(printf '%s' "$input" | jq -r '.agent_type // ""' 2>/dev/null)
+agente=${agente#equipo-dbs:}
 mensaje=$(printf '%s' "$input" | jq -r '.last_assistant_message // ""' 2>/dev/null)
 [ -z "$agente" ] && printf '%s' "$mensaje" | grep -q '(◕‿◕) Whis' && agente=lider
 
