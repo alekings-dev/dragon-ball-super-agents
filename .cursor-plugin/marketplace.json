@@ -1,0 +1,5 @@
+{
+  "name": "dragon-ball-super-agents",
+  "owner": { "name": "Alexis Reyes" },
+  "plugins": [{ "name": "equipo-dbs", "source": "./" }]
+}

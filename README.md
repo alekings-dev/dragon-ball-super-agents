@@ -4,8 +4,9 @@ Equipo de agentes de Claude Code con personajes de Dragon Ball Super:
 
 - **Agentes** (`agents/`): 10 especialistas, `equipo-dbs:<rol>`.
 - **Skill** `equipo-dbs:resolver-issue`: Whis, el líder, toma una issue de Linear, la reparte en el equipo, integra y reporta.
-- **Panel** (`/equipo`): quién trabaja, en qué y quién terminó.
-- **Voces**: cada personaje avisa al terminar.
+- **Skill** `configurar-modelos` (Cursor): pregunta qué modelo usa cada especialista y lo deja en `.cursor/agents/`.
+- **Panel** (`/equipo`, solo Claude Code): quién trabaja, en qué y quién terminó.
+- **Voces** (solo Claude Code): cada personaje avisa al terminar.
 
 Roles y personajes:
 
@@ -89,6 +90,22 @@ claude plugin install equipo-dbs --marketplace alekings-dev/dragon-ball-super-ag
 En la app de escritorio: clic en + junto al cuadro del prompt, luego Plugins, Add marketplace con `alekings-dev/dragon-ball-super-agents`, luego Add plugin.
 
 El repositorio es privado: solo se instala para quienes tengan acceso en GitHub y una credencial de git para github.com en su equipo (una llave SSH, o `gh auth login` y luego `gh auth setup-git`).
+
+## Cursor
+
+El mismo repo es un plugin de Cursor (`.cursor-plugin/`): trae los agentes y las skills, sin panel ni voces.
+
+Instalación (repo privado: necesitas acceso en GitHub y tu credencial de git):
+
+```
+git clone https://github.com/alekings-dev/dragon-ball-super-agents ~/.cursor/plugins/local/dragon-ball-super-agents
+```
+
+Reinicia Cursor y revisa que aparezca en Settings → Plugins. Para actualizar: `git -C ~/.cursor/plugins/local/dragon-ball-super-agents pull`. Usa una carpeta real, no un enlace simbólico.
+
+Modelos: la primera vez que uses `resolver-issue` en un repo, Whis corre `configurar-modelos`. Te propone los modelos por defecto por nivel (Opus para Bills y Freezer, Sonnet para los implementadores, QA, producto y diseño, Haiku para el escritor), te pregunta si los aceptas o cuáles cambiar y escribe `.cursor/agents/<rol>.md`. Para cambiarlos después, pídele «configura los modelos del equipo». Versiona `.cursor/agents/` si quieres que todo el equipo use los mismos, y vuelve a correr la skill al actualizar el plugin.
+
+Cursor ignora sin aviso un ID de modelo que no reconoce (usa el de la sesión principal): la skill solo usa IDs que confirmes.
 
 ## Uso
 

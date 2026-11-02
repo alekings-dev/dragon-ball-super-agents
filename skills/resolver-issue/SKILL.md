@@ -15,6 +15,13 @@ Primero lee `reglas.md` (en la carpeta de esta skill; anota su ruta absoluta, se
 
 Argumento: la issue (con el prefijo de `proyecto.md`). Si no viene, pregúntala.
 
+**En Cursor** (no tienes la herramienta `Agent`; delegas con la herramienta Task):
+- Si el repo no tiene `.cursor/agents/`, corre primero la skill `configurar-modelos` (en la carpeta `configurar-modelos` junto a esta) para que la persona a cargo elija los modelos del equipo.
+- Delegas con Task usando el nombre del rol (`backend`, `qa`…), no `equipo-dbs:<rol>`.
+- Transformaciones: no hay `effort` aparte. Super Saiyan es pedir al lanzar el subagente el modelo del nivel `opus` que eligió la persona en `configurar-modelos` (por defecto `claude-opus-5`), y Super Saiyan Blue el mismo con `[effort=high]`. Si Task no acepta el modelo, el subagente corre con el de `.cursor/agents/`: dilo en el plan.
+- Las preguntas a la persona van con tu herramienta de preguntas si la hay; si no, en el chat. Para corregir a un especialista, relánzalo con la corrección (o reanúdalo por su ID si Task lo permite).
+- No hay panel ni voces en Cursor.
+
 ## 1. Entender (tú)
 1. `get_issue` y `list_comments` de la issue. Mockups con `extract_images` (pásale la descripción completa).
    - Los especialistas no pueden abrir las imágenes de Linear: las URLs vienen firmadas y vencen en minutos. Por eso cada mockup se guarda como archivo local.
