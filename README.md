@@ -5,7 +5,7 @@ Equipo de agentes de Claude Code con personajes de Dragon Ball Super:
 - **Agentes** (`agents/`): 10 especialistas, `equipo-dbs:<rol>`.
 - **Skill** `equipo-dbs:resolver-issue`: Whis, el líder, toma una issue de Linear, la reparte en el equipo, integra y reporta.
 - **Skill** `configurar-modelos` (Cursor): pregunta qué modelo usa cada especialista y lo deja en `.cursor/agents/`.
-- **Panel** (`/equipo`, solo Claude Code): quién trabaja, en qué y quién terminó.
+- **Panel** (`/equipo`, solo Claude Code): quién trabaja, en qué y quién terminó, con el color, la frase y el avatar de pixel art de cada personaje, su transformación (⚡SSJ, ⚡SSJ Blue) y el tiempo de cada tarea.
 - **Voces** (solo Claude Code): cada personaje avisa al terminar.
 
 Roles y personajes:
@@ -22,6 +22,10 @@ Roles y personajes:
 | `qa` | Trunks |
 | `critico-diseno` | Vados |
 | `escritor` | Kaio-sama |
+
+## Avatares
+
+Avatares originales de pixel art (16×16), generados por `scripts/generar-avatares.py` en `hooks/avatares.ts`. Se dibujan en terminales con gráficos (Kitty, iTerm2, WezTerm, Ghostty); en las demás aparece la carita del personaje.
 
 ## Voces
 
