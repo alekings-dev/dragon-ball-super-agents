@@ -1,1 +1,1 @@
-{ "name": "equipo-dbs", "version": "0.5.0", "description": "Equipo de agentes de Claude Code con personajes de Dragon Ball Super: líder, especialistas, panel y voces", "types": "./types/index.d.ts", "hooks": "./hooks/voces.json" }
+{ "name": "equipo-dbs", "version": "0.5.1", "description": "Equipo de agentes de Claude Code con personajes de Dragon Ball Super: líder, especialistas, panel y voces", "types": "./types/index.d.ts", "hooks": "./hooks/voces.json" }
