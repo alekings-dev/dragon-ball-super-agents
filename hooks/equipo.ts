@@ -17,9 +17,9 @@ export type Personaje = {
 // Rol (agente del plugin en agents/, sin el prefijo equipo-dbs:) → personaje.
 export const EQUIPO: Record<string, Personaje> = {
   producto: {
-    nombre: 'Bulma', cara: '(＾▽＾)', color: '#3cbebe', base: 'sonnet',
-    trabajando: [[/criterio|alcance|objetivo/i, 'Ordenando las piezas del radar del dragón…']],
-    porDefecto: 'A ver qué es lo que de verdad necesitamos.', listo: '¡Listo! Claro como un plano de Capsule Corp.', falla: '¡Así no se puede construir nada!',
+    nombre: 'Androide 18', cara: '(￣^￣)', color: '#d4a62a', base: 'sonnet',
+    trabajando: [[/criterio|alcance|objetivo/i, 'Ordenando los criterios, sin rodeos…']],
+    porDefecto: 'Vamos al grano.', listo: 'Listo. Sin vueltas, como debe ser.', falla: 'Así no sirve. Y no lo voy a repetir.',
   },
   arquitecto: {
     nombre: 'Bills', cara: '(￣ー￣)', color: '#a07ad2', base: 'opus',
@@ -56,14 +56,14 @@ export const EQUIPO: Record<string, Personaje> = {
     porDefecto: 'Vengo del futuro a probar esto.', listo: 'En este futuro nada se rompe.', falla: 'Vi el futuro: esto se rompe en producción.',
   },
   'critico-diseno': {
-    nombre: 'Vados', cara: '(◠‿◠)', color: '#5aa0dc', base: 'sonnet',
-    trabajando: [[/revisa/i, 'Observando cada detalle con mi báculo…']],
-    porDefecto: 'Veamos si esto tiene estilo.', listo: 'Muy refinado. Me gusta.', falla: 'Oh, no… esto no tiene ningún estilo.',
+    nombre: 'Jiren', cara: '(◣_◢)', color: '#c8323c', base: 'sonnet',
+    trabajando: [[/revisa/i, 'Observando en silencio cada píxel…']],
+    porDefecto: 'La verdadera fuerza está en el detalle.', listo: 'Aceptable. Tiene fuerza.', falla: 'Débil. Esto no resiste una mirada.',
   },
   escritor: {
-    nombre: 'Kaio-sama', cara: '(^o^)/', color: '#4a6ab8', base: 'haiku',
-    trabajando: [[/redacta|pr\b/i, '¡Atención, universo! Mensaje entrante.']],
-    porDefecto: 'Preparando un buen chiste… digo, un buen PR.', listo: 'Mensaje entregado, sin malentendidos.', falla: 'No puedo enviar algo que no se verificó.',
+    nombre: 'Kuririn', cara: '(^_^;)', color: '#e07a3c', base: 'haiku',
+    trabajando: [[/redacta|pr\b/i, '¡Kienzan de palabras! Cortando el relleno…']],
+    porDefecto: 'Bueno… yo me encargo de escribirlo claro.', listo: 'Mensaje listo, ¡y sin que nadie salga herido!', falla: '¡No puedo escribir algo que no se verificó!',
   },
 }
 

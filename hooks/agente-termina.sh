@@ -1,13 +1,13 @@
 #!/bin/sh
-# Hooks SubagentStop y Stop: cada personaje avisa con voz cuando entrega su reporte (Whis, el líder,
-# cuando su respuesta trae la firma «(◕‿◕) Whis»).
+# Hooks SubagentStop y Stop: cada personaje avisa con voz cuando entrega su reporte (Hitto, el líder,
+# cuando su respuesta trae la firma «(⌐■_■) Hitto»).
 # Si el reporte trae un bloqueo, suena una alarma antes de la frase. Sin `say` (otro SO), no hace nada.
 command -v say >/dev/null 2>&1 || exit 0
 input=$(cat)
 agente=$(printf '%s' "$input" | jq -r '.agent_type // ""' 2>/dev/null)
 agente=${agente#equipo-dbs:}
 mensaje=$(printf '%s' "$input" | jq -r '.last_assistant_message // ""' 2>/dev/null)
-[ -z "$agente" ] && printf '%s' "$mensaje" | grep -q '(◕‿◕) Whis' && agente=lider
+[ -z "$agente" ] && printf '%s' "$mensaje" | grep -q '(⌐■_■) Hitto' && agente=lider
 
 hombre="Eddy (Español (México))"; mujer="Paulina"
 case "$agente" in
@@ -18,10 +18,10 @@ case "$agente" in
   seguridad)      voz="Rocko (Español (México))"; frase="Freezer terminó la revisión." ;;
   qa)             voz=$hombre; frase="Trunks volvió del futuro." ;;
   arquitecto)     voz="Grandpa (Español (México))"; frase="Bills despertó y dio su veredicto." ;;
-  producto)       voz=$mujer; frase="Bulma tiene su análisis listo." ;;
-  critico-diseno) voz="Flo (Español (México))"; frase="Vados terminó de revisar el diseño." ;;
-  escritor)       voz=$hombre; frase="Kaio-sama: mensaje listo." ;;
-  lider)          voz="Grandpa (Español (México))"; frase="Whis: el entrenamiento terminó." ;;
+  producto)       voz=$mujer; frase="Androide 18: listo, sin vueltas." ;;
+  critico-diseno) voz="Rocko (Español (México))"; frase="Jiren terminó de revisar el diseño." ;;
+  escritor)       voz=$hombre; frase="Kuririn: mensaje listo." ;;
+  lider)          voz="Reed (Español (México))"; frase="Hitto: trabajo terminado." ;;
   *)              exit 0 ;;
 esac
 
