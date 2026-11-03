@@ -74,7 +74,13 @@ createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': sprite[2] === 'png' ? 'image/png' : 'application/json' })
     return res.end(readFileSync(join(raiz, 'visor', 'sprites', sprite[1])))
   }
-  if (req.url === '/mapa.js' || req.url === '/arte.js') {
+  // Fondos ilustrados de visor/fondos (desierto, costa, plaza y una sala por rol).
+  const fondo = req.url?.match(/^\/fondos\/([a-z-]+\.(jpg|png))$/)
+  if (fondo && existsSync(join(raiz, 'visor', 'fondos', fondo[1]))) {
+    res.writeHead(200, { 'Content-Type': fondo[2] === 'png' ? 'image/png' : 'image/jpeg' })
+    return res.end(readFileSync(join(raiz, 'visor', 'fondos', fondo[1])))
+  }
+  if (req.url === '/mapa.js') {
     res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8' })
     return res.end(readFileSync(join(raiz, 'visor', req.url.slice(1))))
   }
