@@ -7,6 +7,7 @@ Equipo de agentes de Claude Code con personajes de Dragon Ball Super:
 - **Skill** `configurar-modelos` (Cursor): pregunta qué modelo usa cada especialista y lo deja en `.cursor/agents/`.
 - **Panel** (`/equipo`, solo Claude Code): quién trabaja, en qué y quién terminó, con el color, la frase y el avatar de pixel art de cada personaje, su transformación (⚡SSJ, ⚡SSJ Blue) y el tiempo de cada tarea.
 - **Voces** (solo Claude Code): cada personaje avisa al terminar.
+- **Mapa** (skill `mapa`, solo Claude Code): vista en el navegador con una sala por especialista, Whis al centro y el feed «En vivo».
 
 Roles y personajes:
 
@@ -26,6 +27,17 @@ Roles y personajes:
 ## Avatares
 
 Avatares originales de pixel art (16×16), generados por `scripts/generar-avatares.py` en `hooks/avatares.ts`. Se dibujan en terminales con gráficos (Kitty, iTerm2, WezTerm, Ghostty); en las demás aparece la carita del personaje.
+
+## Mapa
+
+`hooks/evento.sh` anota cada delegación de Whis (`PreToolUse` de Agent) y cada entrega (`SubagentStop`) en `~/.claude/equipo-dbs/eventos.jsonl` (se recorta solo a las últimas 500 líneas). `scripts/visor.mjs` sirve `visor/` en `http://localhost:4321` (solo `127.0.0.1`) y transmite los eventos por SSE; los nombres, colores, frases y transformaciones salen de `hooks/equipo.ts`, el mismo archivo que usa el panel.
+
+```sh
+node scripts/visor.mjs        # o la skill «mapa», que además abre el navegador
+sh hooks/evento.test.sh       # prueba del hook
+```
+
+Requiere Node 23.6 o más nuevo (carga `hooks/*.ts` sin compilar) y `jq`.
 
 ## Voces
 

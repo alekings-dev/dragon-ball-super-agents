@@ -1,6 +1,6 @@
 {
   "name": "equipo-dbs",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Equipo de agentes con personajes de Dragon Ball Super: líder y especialistas",
   "author": { "name": "Alexis Reyes" },
   "agents": "./agents/",
