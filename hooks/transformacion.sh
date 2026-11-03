@@ -1,5 +1,5 @@
 #!/bin/sh
-# Hook PreToolUse (Agent): cuando Hitto delega con transformación, el personaje grita al entrar.
+# Hook PreToolUse (Agent): cuando Hit delega con transformación, el personaje grita al entrar.
 # Super Saiyan = model opus en un rol cuya forma base no es opus; Super Saiyan Blue = effort high o más.
 # Audios en voces/<rol>-ssj.mp3 y voces/<rol>-blue.mp3 (generar-voces.sh); sin ellos, voz de macOS.
 command -v say >/dev/null 2>&1 || exit 0

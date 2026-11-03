@@ -1,4 +1,4 @@
-// Mapa del equipo: una sala por rol, Hitto al centro y el feed «En vivo». Los datos llegan por SSE desde scripts/visor.mjs.
+// Mapa del equipo: una sala por rol, Hit al centro y el feed «En vivo». Los datos llegan por SSE desde scripts/visor.mjs.
 // Todo texto que viene de los eventos se pinta con textContent (las tareas las escribe el líder).
 // Personajes: hojas de visor/sprites (scripts/importar-sprites.py), una fila por animación; si falta la hoja, el avatar 16x16.
 
@@ -112,7 +112,7 @@ async function caminar(rol, desde, hasta) {
   return pj
 }
 
-/** Ida y vuelta: la sala ↔ la plaza de Hitto. `entrega` = va a entregar (sale de la sala); si no, llega con la tarea. */
+/** Ida y vuelta: la sala ↔ la plaza de Hit. `entrega` = va a entregar (sale de la sala); si no, llega con la tarea. */
 async function viaje(rol, entrega, bloqueo) {
   const sala = $(`#sala-${rol}`)
   const enSala = $('.pj, .avatar', sala)
@@ -146,8 +146,8 @@ function aplicar(e, enVivo = false) {
     estado[e.rol] = { ...previo, estado: e.bloqueo ? 'falló' : 'terminó', hasta: e.t, frase: e.frase }
   }
   feed.unshift(e.tipo === 'inicio'
-    ? { t: e.t, rol: e.rol, de: 'Hitto', a: equipo[e.rol]?.nombre, texto: e.tarea }
-    : { t: e.t, rol: e.rol, de: equipo[e.rol]?.nombre, a: 'Hitto', texto: `${e.bloqueo ? 'bloqueo en' : 'entregó'}: ${previo.tarea ?? ''}` })
+    ? { t: e.t, rol: e.rol, de: 'Hit', a: equipo[e.rol]?.nombre, texto: e.tarea }
+    : { t: e.t, rol: e.rol, de: equipo[e.rol]?.nombre, a: 'Hit', texto: `${e.bloqueo ? 'bloqueo en' : 'entregó'}: ${previo.tarea ?? ''}` })
   feed.length = Math.min(feed.length, 30)
   if (enVivo) void viaje(e.rol, e.tipo === 'fin', e.bloqueo)
 }
@@ -234,7 +234,7 @@ function pintar() {
     }
     info.append(titulo, document.createElement('br'), `${s.tarea}${s.proyecto ? ` · ${s.proyecto}` : ''}`)
   }
-  $('#resumen').textContent = `Hitto dirige · ${trabajando === 0 ? 'todos descansando' : `${trabajando} trabajando`}`
+  $('#resumen').textContent = `Hit dirige · ${trabajando === 0 ? 'todos descansando' : `${trabajando} trabajando`}`
   const lista = $('#feed')
   lista.replaceChildren(...feed.map(f => {
     const li = document.createElement('li')

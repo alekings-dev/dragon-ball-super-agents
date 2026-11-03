@@ -61,7 +61,7 @@ export const EQUIPO: Record<string, Personaje> = {
     porDefecto: 'La verdadera fuerza está en el detalle.', listo: 'Aceptable. Tiene fuerza.', falla: 'Débil. Esto no resiste una mirada.',
   },
   escritor: {
-    nombre: 'Kuririn', cara: '(^_^;)', color: '#e07a3c', base: 'haiku',
+    nombre: 'Krilin', cara: '(^_^;)', color: '#e07a3c', base: 'haiku',
     trabajando: [[/redacta|pr\b/i, '¡Kienzan de palabras! Cortando el relleno…']],
     porDefecto: 'Bueno… yo me encargo de escribirlo claro.', listo: 'Mensaje listo, ¡y sin que nadie salga herido!', falla: '¡No puedo escribir algo que no se verificó!',
   },

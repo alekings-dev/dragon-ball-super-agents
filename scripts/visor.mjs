@@ -31,7 +31,7 @@ function enriquecer(linea) {
 }
 
 const equipo = Object.fromEntries(Object.entries(EQUIPO).map(([rol, p]) => [rol, { nombre: p.nombre, color: p.color, avatar: AVATARES[rol] }]))
-equipo.lider = { nombre: 'Hitto', color: '#9b6fd0', avatar: AVATARES.lider }
+equipo.lider = { nombre: 'Hit', color: '#9b6fd0', avatar: AVATARES.lider }
 
 const clientes = new Set()
 let leido = statSync(archivo).size

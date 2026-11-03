@@ -107,7 +107,7 @@ PELOS = {
         "................",
         "................",
     ],
-    'calvo': ["................"] * 7,  # Jiren, Kuririn, Hitto
+    'calvo': ["................"] * 7,  # Jiren, Krilin, Hit
     'antenas': [  # (sin uso por ahora)
         "...H........H...",
         "....H......H....",

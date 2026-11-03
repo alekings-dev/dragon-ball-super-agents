@@ -53,7 +53,7 @@ export const register: Register = on => {
     return next(e)
   })
 
-  // Anota la transformación con que Hitto lanza a cada especialista (model / effort de la llamada a Agent).
+  // Anota la transformación con que Hit lanza a cada especialista (model / effort de la llamada a Agent).
   on('tool.call', { tool: 'Agent' }, async ($, e, next) => {
     const p = EQUIPO[(e.subagent_type ?? '').replace(/^equipo-dbs:/, '')]
     const t = p && transformacionDe(p.base, e.model, e.effort)
@@ -127,7 +127,7 @@ export const register: Register = on => {
         <Box flexDirection="row" gap={1}>
           {Image && AVATARES.lider ? <Image key="lider" source={{ png: AVATARES.lider }} columns={4} rows={2} alt="(⌐■_■)" /> : null}
           <Text>
-            <Text bold color="#c8c8dc">(⌐■_■) Hitto dirige</Text>
+            <Text bold color="#c8c8dc">(⌐■_■) Hit dirige</Text>
             <Text dimColor> · {trabajando.length === 0 ? 'todos descansando' : `${trabajando.length} trabajando`}</Text>
           </Text>
         </Box>

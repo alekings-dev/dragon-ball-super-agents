@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Genera visor/arte.js: arte original de pixel art (16x16) para el mapa del equipo, en PNG base64.
 
-Suelos de cada sala, muebles y decoración del mapa (rocas, palmeras, la fuente de Hitto, la casita de la isla).
+Suelos de cada sala, muebles y decoración del mapa (rocas, palmeras, la fuente de Hit, la casita de la isla).
 Reutiliza el escritor de PNG de generar-avatares.py.
 
 Uso: python3 scripts/generar-arte.py

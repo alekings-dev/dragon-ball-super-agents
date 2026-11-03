@@ -3,11 +3,11 @@
 Equipo de agentes de Claude Code con personajes de Dragon Ball Super:
 
 - **Agentes** (`agents/`): 10 especialistas, `equipo-dbs:<rol>`.
-- **Skill** `equipo-dbs:resolver-issue`: Hitto, el líder, toma una issue de Linear, la reparte en el equipo, integra y reporta.
+- **Skill** `equipo-dbs:resolver-issue`: Hit, el líder, toma una issue de Linear, la reparte en el equipo, integra y reporta.
 - **Skill** `configurar-modelos` (Cursor): pregunta qué modelo usa cada especialista y lo deja en `.cursor/agents/`.
 - **Panel** (`/equipo`, solo Claude Code): quién trabaja, en qué y quién terminó, con el color, la frase y el avatar de pixel art de cada personaje, su transformación (⚡SSJ, ⚡SSJ Blue) y el tiempo de cada tarea.
 - **Voces** (solo Claude Code): cada personaje avisa al terminar.
-- **Mapa** (skill `mapa`, solo Claude Code): vista en el navegador con una sala por especialista, Hitto al centro y el feed «En vivo».
+- **Mapa** (skill `mapa`, solo Claude Code): vista en el navegador con una sala por especialista, Hit al centro y el feed «En vivo».
 
 Roles y personajes:
 
@@ -22,7 +22,7 @@ Roles y personajes:
 | `seguridad` | Freezer |
 | `qa` | Trunks |
 | `critico-diseno` | Jiren |
-| `escritor` | Kuririn |
+| `escritor` | Krilin |
 
 ## Avatares
 
@@ -30,16 +30,16 @@ Avatares originales de pixel art (16×16), generados por `scripts/generar-avatar
 
 ## Mapa
 
-`hooks/evento.sh` anota cada delegación de Hitto (`PreToolUse` de Agent) y cada entrega (`SubagentStop`) en `~/.claude/equipo-dbs/eventos.jsonl` (se recorta solo a las últimas 500 líneas). `scripts/visor.mjs` sirve `visor/` en `http://localhost:4321` (solo `127.0.0.1`) y transmite los eventos por SSE; los nombres, colores, frases y transformaciones salen de `hooks/equipo.ts`, el mismo archivo que usa el panel.
+`hooks/evento.sh` anota cada delegación de Hit (`PreToolUse` de Agent) y cada entrega (`SubagentStop`) en `~/.claude/equipo-dbs/eventos.jsonl` (se recorta solo a las últimas 500 líneas). `scripts/visor.mjs` sirve `visor/` en `http://localhost:4321` (solo `127.0.0.1`) y transmite los eventos por SSE; los nombres, colores, frases y transformaciones salen de `hooks/equipo.ts`, el mismo archivo que usa el panel.
 
 ```sh
 node scripts/visor.mjs        # o la skill «mapa», que además abre el navegador
 sh hooks/evento.test.sh       # prueba del hook
 ```
 
-El arte del mapa (suelos, muebles, rocas, la fuente de Hitto y la isla) es pixel art original de 16×16, generado por `scripts/generar-arte.py` en `visor/arte.js`.
+El arte del mapa (suelos, muebles, rocas, la fuente de Hit y la isla) es pixel art original de 16×16, generado por `scripts/generar-arte.py` en `visor/arte.js`.
 
-Los personajes del mapa son sprites de fans de la colección «Dragon Ball Sagas» (autores en `visor/sprites/CREDITOS.md`). `scripts/importar-sprites.py` les quita el fondo y arma una hoja por rol en `visor/sprites/` (una fila por animación: quieto, camina, aura, entrega, caída); qué cuadro va en cada animación se elige en el diccionario `EQUIPO` del script. En el mapa, cuando Hitto delega, el personaje camina desde la plaza hasta su sala; cuando entrega, va a la plaza, hace su pose (o cae, si hay bloqueo) y vuelve. Con transformación trabaja con su aura.
+Los personajes del mapa son sprites de fans de la colección «Dragon Ball Sagas» (autores en `visor/sprites/CREDITOS.md`). `scripts/importar-sprites.py` les quita el fondo y arma una hoja por rol en `visor/sprites/` (una fila por animación: quieto, camina, aura, entrega, caída); qué cuadro va en cada animación se elige en el diccionario `EQUIPO` del script. En el mapa, cuando Hit delega, el personaje camina desde la plaza hasta su sala; cuando entrega, va a la plaza, hace su pose (o cae, si hay bloqueo) y vuelve. Con transformación trabaja con su aura.
 
 ```sh
 python3 scripts/importar-sprites.py "/ruta/a/Dragon Ball Sagas"   # requiere Pillow
@@ -49,7 +49,7 @@ Requiere Node 23.6 o más nuevo (carga `hooks/*.ts` sin compilar) y `jq`.
 
 ## Voces
 
-Cada personaje avisa con su voz cuando termina (`hooks/agente-termina.sh`, en `SubagentStop` y `Stop`; Hitto cuando la respuesta trae la firma «(⌐■_■) Hitto»). Si el reporte trae un bloqueo, suena la versión de alerta. Al delegar con transformación (`model: opus` o `effort` alto), el personaje grita al entrar (`hooks/transformacion.sh`).
+Cada personaje avisa con su voz cuando termina (`hooks/agente-termina.sh`, en `SubagentStop` y `Stop`; Hit cuando la respuesta trae la firma «(⌐■_■) Hit»). Si el reporte trae un bloqueo, suena la versión de alerta. Al delegar con transformación (`model: opus` o `effort` alto), el personaje grita al entrar (`hooks/transformacion.sh`).
 
 Los audios están en `hooks/voces/`. Para regenerarlos con Fish Audio: `FISH_API_KEY=... hooks/generar-voces.sh` (`-f` para sobrescribir); frases y voces en `hooks/voces.tsv` y `hooks/transformaciones.tsv`.
 
@@ -127,7 +127,7 @@ git clone https://github.com/alekings-dev/dragon-ball-super-agents ~/.cursor/plu
 
 Reinicia Cursor y revisa que aparezca en Settings → Plugins. Para actualizar: `git -C ~/.cursor/plugins/local/dragon-ball-super-agents pull`. Usa una carpeta real, no un enlace simbólico.
 
-Modelos: la primera vez que uses `resolver-issue` en un repo, Hitto corre `configurar-modelos`. Te propone los modelos por defecto por nivel (Opus para Bills y Freezer, Sonnet para los implementadores, QA, producto y diseño, Haiku para el escritor), te pregunta si los aceptas o cuáles cambiar y escribe `.cursor/agents/<rol>.md`. Para cambiarlos después, pídele «configura los modelos del equipo». Versiona `.cursor/agents/` si quieres que todo el equipo use los mismos, y vuelve a correr la skill al actualizar el plugin.
+Modelos: la primera vez que uses `resolver-issue` en un repo, Hit corre `configurar-modelos`. Te propone los modelos por defecto por nivel (Opus para Bills y Freezer, Sonnet para los implementadores, QA, producto y diseño, Haiku para el escritor), te pregunta si los aceptas o cuáles cambiar y escribe `.cursor/agents/<rol>.md`. Para cambiarlos después, pídele «configura los modelos del equipo». Versiona `.cursor/agents/` si quieres que todo el equipo use los mismos, y vuelve a correr la skill al actualizar el plugin.
 
 Cursor ignora sin aviso un ID de modelo que no reconoce (usa el de la sesión principal): la skill solo usa IDs que confirmes.
 
