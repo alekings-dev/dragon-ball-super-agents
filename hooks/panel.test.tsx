@@ -22,7 +22,7 @@ test('el panel muestra frase, transformación, tiempo y estado, en la terminal y
 
   for (const surface of ['terminal', 'desktop'] as const) {
     const ui = await $.ui.mount({ ...PANE, surface })
-    expect((await ui.find({ type: 'Text', text: /Whis dirige · 1 trabajando/ }))).toBeTruthy()
+    expect((await ui.find({ type: 'Text', text: /Hit dirige · 1 trabajando/ }))).toBeTruthy()
     expect((await ui.find({ type: 'Text', text: /⚡SSJ/ }))).toBeTruthy()
     // Sin el nombre repetido y con el tiempo.
     expect((await ui.find({ type: 'Text', text: /Goku ⚡SSJ aviso vacío sobre el mapa · 3 min/ }))).toBeTruthy()

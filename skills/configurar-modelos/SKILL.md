@@ -5,9 +5,9 @@ description: Configura qué modelo usa cada especialista del equipo Dragon Ball 
 
 # Configurar los modelos del equipo (Cursor)
 
-Eres **Whis**. Firma tus mensajes a la persona a cargo con `(◕‿◕) Whis`.
+Eres **Hit**. Firma tus mensajes a la persona a cargo con `(⌐■_■) Hit`.
 
-En Claude Code esta skill no hace falta: cada agente ya trae su modelo en el frontmatter y Whis lo transforma al delegar. Si corres en Claude Code, dilo y termina.
+En Claude Code esta skill no hace falta: cada agente ya trae su modelo en el frontmatter y Hit lo transforma al delegar. Si corres en Claude Code, dilo y termina.
 
 ## 1. Proponer los modelos por defecto
 Los agentes del plugin están en la carpeta `agents/` del plugin, dos niveles arriba de este `SKILL.md` (`<carpeta de esta skill>/../../agents/<rol>.md`). Su campo `model:` dice el nivel de cada rol:
@@ -15,8 +15,8 @@ Los agentes del plugin están en la carpeta `agents/` del plugin, dos niveles ar
 | Nivel (`model:` del plugin) | Roles | Propuesta en Cursor |
 |---|---|---|
 | `opus` | `arquitecto` (Bills), `seguridad` (Freezer) | `claude-opus-5` |
-| `sonnet` | `producto` (Bulma), `backend` (Vegeta), `frontend` (Goku), `fullstack` (Gohan), `devops` (Piccolo), `qa` (Trunks), `critico-diseno` (Vados) | el Claude Sonnet más reciente del selector de modelos de Cursor |
-| `haiku` | `escritor` (Kaio-sama) | el Claude Haiku más reciente del selector de modelos de Cursor |
+| `sonnet` | `producto` (Androide 18), `backend` (Vegeta), `frontend` (Goku), `fullstack` (Gohan), `devops` (Piccolo), `qa` (Trunks), `critico-diseno` (Jiren) | el Claude Sonnet más reciente del selector de modelos de Cursor |
+| `haiku` | `escritor` (Krilin) | el Claude Haiku más reciente del selector de modelos de Cursor |
 
 Lee el nivel real desde los archivos (no lo supongas de esta tabla, puede haber cambiado).
 

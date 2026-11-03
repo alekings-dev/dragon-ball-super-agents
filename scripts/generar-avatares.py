@@ -8,7 +8,7 @@ import base64, struct, zlib, pathlib
 PAL = {
     '.': None,
     'k': (20, 20, 28), 'w': (245, 245, 245), 'e': (25, 25, 35),
-    's': (247, 205, 165), 'g': (110, 190, 90), 'b': (120, 160, 230), 'p': (170, 130, 210),
+    's': (247, 205, 165), 'J': (175, 175, 190), 'g': (110, 190, 90), 'b': (120, 160, 230), 'p': (170, 130, 210),
     'W': (230, 230, 240), 'P': (150, 70, 170), 'L': (180, 160, 230), 'T': (60, 190, 190),
     'O': (240, 130, 30), 'B': (40, 80, 180), 'V': (110, 60, 160), 'R': (200, 50, 50),
     'Y': (230, 190, 40), 'D': (40, 40, 60), 'S': (90, 160, 220), 'G': (60, 60, 70),
@@ -80,7 +80,7 @@ PELOS = {
         "..HHH......HHH..",
         "..HH........HH..",
     ],
-    'melena': [  # Bulma
+    'melena': [  # Androide 18
         "................",
         "................",
         "....HHHHHHHH....",
@@ -98,7 +98,7 @@ PELOS = {
         "................",
         "................",
     ],
-    'alto': [  # Whis, Vados
+    'alto': [  # (sin uso por ahora)
         "......HHHH......",
         ".....HHHHHH.....",
         ".....HHHHHH.....",
@@ -107,7 +107,8 @@ PELOS = {
         "................",
         "................",
     ],
-    'antenas': [  # Kaio-sama
+    'calvo': ["................"] * 7,  # Jiren, Krilin, Hit
+    'antenas': [  # (sin uso por ahora)
         "...H........H...",
         "....H......H....",
         ".....H....H.....",
@@ -126,11 +127,11 @@ AVATARES = {
     'devops': ('turbante', 'w', 'g', 'P', 'p'),
     'seguridad': ('domo', 'W', 'W', 'P', 'P'),
     'qa': ('raya', 'L', 's', 'B', None),
-    'producto': ('melena', 'T', 's', 'R', None),
+    'producto': ('melena', 'Y', 's', 'B', None),
     'arquitecto': ('orejas', 'p', 'p', 'Y', None),
-    'critico-diseno': ('alto', 'w', 'S', 'D', None),
-    'escritor': ('antenas', 'k', 'S', 'G', 'gafas'),
-    'whis': ('alto', 'w', 'S', 'R', None),
+    'critico-diseno': ('calvo', 'k', 'J', 'R', None),
+    'escritor': ('calvo', 'k', 's', 'O', None),
+    'lider': ('calvo', 'k', 'L', 'D', None),
 }
 
 

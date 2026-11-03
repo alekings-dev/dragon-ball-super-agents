@@ -3,76 +3,11 @@ import type { Register } from 'claude-code'
 
 import type { Miembro, Transformacion } from '../types'
 import { AVATARES } from './avatares'
+import { EQUIPO, transformacionDe, type Personaje } from './equipo'
 
 const PANE = 'equipo-dbs'
 const miembros = atom({ plugin: 'equipo-dbs', key: 'miembros' } as const, [])
 const transformaciones = atom({ plugin: 'equipo-dbs', key: 'transformaciones' } as const, {})
-
-type Personaje = {
-  nombre: string
-  cara: string
-  color: string
-  /** Modelo base del agente (frontmatter): Opus ya no sube a SSJ, solo a SSJ Blue. */
-  base: 'opus' | 'sonnet' | 'haiku'
-  /** Frase mientras trabaja, según lo que hace (primer patrón que calce con la tarea). */
-  trabajando: [RegExp, string][]
-  porDefecto: string
-  listo: string
-  falla: string
-}
-
-// Rol (agente del plugin en agents/, sin el prefijo equipo-dbs:) → personaje.
-const EQUIPO: Record<string, Personaje> = {
-  producto: {
-    nombre: 'Bulma', cara: '(＾▽＾)', color: '#3cbebe', base: 'sonnet',
-    trabajando: [[/criterio|alcance|objetivo/i, 'Ordenando las piezas del radar del dragón…']],
-    porDefecto: 'A ver qué es lo que de verdad necesitamos.', listo: '¡Listo! Claro como un plano de Capsule Corp.', falla: '¡Así no se puede construir nada!',
-  },
-  arquitecto: {
-    nombre: 'Bills', cara: '(￣ー￣)', color: '#a07ad2', base: 'opus',
-    trabajando: [[/contrato|dise[ñn]o|modelo/i, 'Hmm… este diseño, ¿lo destruyo o lo apruebo?']],
-    porDefecto: 'Que no me hagan esperar mucho…', listo: 'Aceptable. Esta vez no destruyo nada.', falla: 'Esto merece ser destruido.',
-  },
-  backend: {
-    nombre: 'Vegeta', cara: '(¬_¬)', color: '#2f62c8', base: 'sonnet',
-    trabajando: [[/endpoint|servicio|consulta|migraci/i, 'Ningún índice se le escapa al príncipe.'], [/revisa/i, 'Hmph. Revisando el trabajo de Kakaroto…']],
-    porDefecto: 'Hmph. Yo me encargo del servidor.', listo: 'Perfecto, como era de esperarse del príncipe.', falla: '¡Insecto! Esto escanea la tabla completa.',
-  },
-  frontend: {
-    nombre: 'Goku', cara: '(ง •̀_•́)ง', color: '#f08220', base: 'sonnet',
-    trabajando: [[/revisa/i, '¡Oye Vegeta, déjame ver tu API!'], [/estilo|css|tipograf|aviso|pantalla/i, '¡Esto se pone bueno! Ajustando la pantalla.']],
-    porDefecto: '¡Hola, soy Goku! A entrenar el frontend.', listo: '¡Lo logramos! ¡Ni un píxel se movió!', falla: '¡Uf, este layout salta! Hay que entrenar más.',
-  },
-  fullstack: {
-    nombre: 'Gohan', cara: '(・_・)ゞ', color: '#7a4fc0', base: 'sonnet',
-    trabajando: [], porDefecto: 'Estudio el contrato y luego lo implemento de punta a punta.', listo: 'Listo, de la API a la pantalla.', falla: 'Papá, algo no cuadra entre la API y la web…',
-  },
-  devops: {
-    nombre: 'Piccolo', cara: '(-_-)', color: '#4caf50', base: 'sonnet',
-    trabajando: [[/integra/i, 'Protegiendo el fuerte mientras integro…'], [/ci|check|deploy/i, 'Meditando sobre los checks…']],
-    porDefecto: 'Concéntrate. El fuerte no se cuida solo.', listo: 'El fuerte está a salvo.', falla: 'No integré. Algo amenaza el fuerte.',
-  },
-  seguridad: {
-    nombre: 'Freezer', cara: '(¬‿¬)', color: '#b04fc8', base: 'opus',
-    trabajando: [[/re-?revisa/i, 'Una segunda mirada… por si se me escapó algo.'], [/revisa|diff/i, 'Buscando debilidades, con toda calma…']],
-    porDefecto: 'Ho ho ho… veamos qué tenemos aquí.', listo: 'Ni una sola debilidad.', falla: 'Qué decepción… encontré una debilidad.',
-  },
-  qa: {
-    nombre: 'Trunks', cara: '(•̀ᴗ•́)و', color: '#9c8cdc', base: 'sonnet',
-    trabajando: [[/re-?verifica/i, 'Viajando al futuro otra vez…'], [/verifica|regresi/i, 'Revisando el futuro de este cambio…']],
-    porDefecto: 'Vengo del futuro a probar esto.', listo: 'En este futuro nada se rompe.', falla: 'Vi el futuro: esto se rompe en producción.',
-  },
-  'critico-diseno': {
-    nombre: 'Vados', cara: '(◠‿◠)', color: '#5aa0dc', base: 'sonnet',
-    trabajando: [[/revisa/i, 'Observando cada detalle con mi báculo…']],
-    porDefecto: 'Veamos si esto tiene estilo.', listo: 'Muy refinado. Me gusta.', falla: 'Oh, no… esto no tiene ningún estilo.',
-  },
-  escritor: {
-    nombre: 'Kaio-sama', cara: '(^o^)/', color: '#4a6ab8', base: 'haiku',
-    trabajando: [[/redacta|pr\b/i, '¡Atención, universo! Mensaje entrante.']],
-    porDefecto: 'Preparando un buen chiste… digo, un buen PR.', listo: 'Mensaje entregado, sin malentendidos.', falla: 'No puedo enviar algo que no se verificó.',
-  },
-}
 
 const COLOR_AURA: Record<Transformacion, string> = { SSJ: '#f2c230', 'SSJ Blue': '#3fb6f0' }
 
@@ -88,14 +23,6 @@ const frase = (p: Personaje, m: Miembro) =>
 const duracion = (ms: number) => {
   const min = Math.floor(ms / 60000)
   return min < 1 ? `${Math.max(1, Math.round(ms / 1000))} s` : min < 60 ? `${min} min` : `${Math.floor(min / 60)} h ${min % 60} min`
-}
-
-/** Transformación que le corresponde a una llamada a Agent, según el modelo base del rol. */
-const transformacionDe = (base: Personaje['base'], model?: string, effort?: string): Transformacion | undefined => {
-  const alto = effort === 'high' || effort === 'xhigh' || effort === 'max'
-  if ((model === 'opus' || base === 'opus') && alto) return 'SSJ Blue'
-  if (model === 'opus' && base !== 'opus') return 'SSJ'
-  return undefined
 }
 
 export const register: Register = on => {
@@ -126,7 +53,7 @@ export const register: Register = on => {
     return next(e)
   })
 
-  // Anota la transformación con que Whis lanza a cada especialista (model / effort de la llamada a Agent).
+  // Anota la transformación con que Hit lanza a cada especialista (model / effort de la llamada a Agent).
   on('tool.call', { tool: 'Agent' }, async ($, e, next) => {
     const p = EQUIPO[(e.subagent_type ?? '').replace(/^equipo-dbs:/, '')]
     const t = p && transformacionDe(p.base, e.model, e.effort)
@@ -198,9 +125,9 @@ export const register: Register = on => {
     return (
       <Box flexDirection="column">
         <Box flexDirection="row" gap={1}>
-          {Image && AVATARES.whis ? <Image key="whis" source={{ png: AVATARES.whis }} columns={4} rows={2} alt="(◕‿◕)" /> : null}
+          {Image && AVATARES.lider ? <Image key="lider" source={{ png: AVATARES.lider }} columns={4} rows={2} alt="(⌐■_■)" /> : null}
           <Text>
-            <Text bold color="#c8c8dc">(◕‿◕) Whis dirige</Text>
+            <Text bold color="#c8c8dc">(⌐■_■) Hit dirige</Text>
             <Text dimColor> · {trabajando.length === 0 ? 'todos descansando' : `${trabajando.length} trabajando`}</Text>
           </Text>
         </Box>

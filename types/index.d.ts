@@ -8,7 +8,7 @@ export type Miembro = {
   hasta?: number
 }
 
-/** Transformación con la que Whis lanzó cada tarea, por su descripción. */
+/** Transformación con la que Hit lanzó cada tarea, por su descripción. */
 export type Transformacion = 'SSJ' | 'SSJ Blue'
 
 declare module 'claude-code' {

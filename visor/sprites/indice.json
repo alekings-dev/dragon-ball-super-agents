@@ -1,0 +1,299 @@
+{
+ "frontend": {
+  "w": 77,
+  "h": 72,
+  "alto": 46,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "backend": {
+  "w": 77,
+  "h": 73,
+  "alto": 47,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "fullstack": {
+  "w": 77,
+  "h": 72,
+  "alto": 48,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 4
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 3
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "devops": {
+  "w": 110,
+  "h": 73,
+  "alto": 46,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 4
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "seguridad": {
+  "w": 82,
+  "h": 72,
+  "alto": 40,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "qa": {
+  "w": 69,
+  "h": 77,
+  "alto": 45,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 2
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "arquitecto": {
+  "w": 77,
+  "h": 73,
+  "alto": 56,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 3
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "producto": {
+  "w": 46,
+  "h": 42,
+  "alto": 42,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 2
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "critico-diseno": {
+  "w": 112,
+  "h": 98,
+  "alto": 41,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "escritor": {
+  "w": 98,
+  "h": 78,
+  "alto": 37,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ },
+ "lider": {
+  "w": 89,
+  "h": 82,
+  "alto": 48,
+  "animaciones": {
+   "quieto": {
+    "fila": 0,
+    "cuadros": 3
+   },
+   "camina": {
+    "fila": 1,
+    "cuadros": 2
+   },
+   "aura": {
+    "fila": 2,
+    "cuadros": 3
+   },
+   "entrega": {
+    "fila": 3,
+    "cuadros": 2
+   },
+   "caida": {
+    "fila": 4,
+    "cuadros": 1
+   }
+  }
+ }
+}
