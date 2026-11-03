@@ -37,7 +37,7 @@ node scripts/visor.mjs        # o la skill «mapa», que además abre el navegad
 sh hooks/evento.test.sh       # prueba del hook
 ```
 
-El arte del mapa (suelos, muebles, rocas, la fuente de Hit y la isla) es pixel art original de 16×16, generado por `scripts/generar-arte.py` en `visor/arte.js`.
+Los fondos del mapa (desierto, costa con la Kame House, la plaza de Hit y una sala por rol) son ilustraciones generadas con IA en `visor/fondos/`: `sala-<rol>.jpg` a 512×512, `plaza.png` recortada en círculo con fondo transparente.
 
 Los personajes del mapa son sprites de fans de la colección «Dragon Ball Sagas» (autores en `visor/sprites/CREDITOS.md`). `scripts/importar-sprites.py` les quita el fondo y arma una hoja por rol en `visor/sprites/` (una fila por animación: quieto, camina, aura, entrega, caída); qué cuadro va en cada animación se elige en el diccionario `EQUIPO` del script. En el mapa, cuando Hit delega, el personaje camina desde la plaza hasta su sala; cuando entrega, va a la plaza, hace su pose (o cae, si hay bloqueo) y vuelve. Con transformación trabaja con su aura.
 
