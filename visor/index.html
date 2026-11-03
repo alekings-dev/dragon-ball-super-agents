@@ -6,7 +6,7 @@
 <link rel="icon" href="data:,">
 <title>Mapa del equipo · equipo-dbs</title>
 <style>
-  :root { --tinta: #1d2140; --borde: #3a2a1a; --camino: #ecc994; }
+  :root { --tinta: #1d2140; --borde: #3a2a1a; --camino: #ecc994; --mar: clamp(260px, 22vw, 360px); --hueco: clamp(14px, 2.2vw, 34px); }
   * { box-sizing: border-box; }
   body {
     margin: 0; min-height: 100vh; display: flex; align-items: stretch;
@@ -14,8 +14,9 @@
     background: url(/fondos/desierto.jpg) center / cover, #eaa055;
   }
   main {
-    position: relative; flex: 1; display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr)); grid-template-rows: repeat(3, 300px);
-    gap: 34px; padding: 34px; max-width: 1400px; margin: 0 auto; align-content: start;
+    /* Las tres filas reparten el alto de la ventana: el mapa entero se ve sin desplazarse. */
+    position: relative; flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(200px, 1fr));
+    gap: var(--hueco); padding: var(--hueco); max-width: 1400px; height: 100vh; min-height: 720px; margin: 0 auto;
     /* Caminos de arena clara que unen las salas con la plaza de Hit. */
     background:
       linear-gradient(transparent calc(50% - 16px), var(--camino) calc(50% - 16px) calc(50% + 16px), transparent calc(50% + 16px)),
@@ -35,7 +36,7 @@
   .sala[data-estado="falló"] header .punto { background: #ff5a4e; }
   /* Ilustración de la sala (visor/fondos/sala-<rol>.jpg); los personajes se paran abajo, en la puerta. */
   .suelo {
-    flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    flex: 1; min-height: 0; overflow: hidden; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
     gap: 6px; padding: 8px 8px 14px;
     background: var(--fondo) 50% 30% / cover;
   }
@@ -69,21 +70,31 @@
   .plaza p { margin: 6px 0 0; color: #fff; font-weight: 700; text-shadow: 0 2px 0 #0008; }
   /* Costa a la derecha (visor/fondos/costa.jpg, con la isla de Roshi) y debajo el feed «En vivo». */
   .mar {
-    flex: none; width: 360px; padding: 34px 20px; display: flex; flex-direction: column; gap: 24px;
+    flex: none; width: var(--mar); padding: 34px 20px; display: flex; flex-direction: column; gap: 24px;
     background: url(/fondos/costa.jpg) 0 0 / 100% auto repeat-y, #2ab0bb;
   }
   /* Alto de la isla en la ilustración: el letrero queda bajo la casa y el feed empieza después. */
-  .isla { position: relative; height: 640px; }
+  .isla { position: relative; height: calc(var(--mar) * 1.78); }
   .isla span {
     position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); padding: 2px 8px; border-radius: 6px;
     background: #1f2b6bee; color: #fff; font-weight: 700; font-size: 12px; white-space: nowrap;
   }
-  #vivo { max-height: 60vh; overflow: auto; padding: 10px 12px; background: #141833ee; color: #e8eaf6; border-radius: 8px; font-size: 12px; }
+  #vivo { max-height: max(160px, calc(100vh - var(--mar) * 1.78 - 92px)); overflow: auto; padding: 10px 12px; background: #141833ee; color: #e8eaf6; border-radius: 8px; font-size: 12px; }
   #vivo h2 { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em; color: #7dff6b; }
   #vivo ol { list-style: none; margin: 0; padding: 0; }
   #vivo li { padding: 5px 0 5px 8px; border-left: 3px solid var(--color, #888); margin-bottom: 4px; }
   #vivo li span { display: block; opacity: .7; }
   #vivo li time { float: right; opacity: .55; }
+  /* Pantallas angostas: el mar baja bajo el mapa, sin la isla, y las salas van de a dos (o de a una). */
+  @media (max-width: 960px) {
+    body { flex-direction: column; }
+    main { width: 100%; height: auto; min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; grid-auto-rows: 260px; grid-auto-flow: dense; background: none; }
+    .plaza { grid-column: 1 / -1; grid-row: auto; }
+    .mar { width: 100%; padding: 20px; background: #2ab0bb; }
+    .isla { display: none; }
+    #vivo { max-height: 50vh; }
+  }
+  @media (max-width: 540px) { main { grid-template-columns: minmax(0, 1fr); } }
   @media (prefers-reduced-motion: reduce) { .sala[data-estado="trabaja"] .avatar { animation: none; } }
 </style>
 </head>
