@@ -37,6 +37,8 @@ node scripts/visor.mjs        # o la skill «mapa», que además abre el navegad
 sh hooks/evento.test.sh       # prueba del hook
 ```
 
+El arte del mapa (suelos, muebles, rocas, la fuente de Whis y la isla) es pixel art original de 16×16, generado por `scripts/generar-arte.py` en `visor/arte.js`.
+
 Requiere Node 23.6 o más nuevo (carga `hooks/*.ts` sin compilar) y `jq`.
 
 ## Voces

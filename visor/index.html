@@ -6,63 +6,81 @@
 <link rel="icon" href="data:,">
 <title>Mapa del equipo · equipo-dbs</title>
 <style>
-  :root { --arena: #d9a35f; --arena-2: #c98f4c; --tinta: #1d2140; --borde: #3a2a1a; }
+  :root { --tinta: #1d2140; --borde: #3a2a1a; --camino: #ecc994; }
   * { box-sizing: border-box; }
   body {
-    margin: 0; min-height: 100vh; font: 14px/1.3 ui-rounded, system-ui, sans-serif; color: var(--tinta);
-    background: radial-gradient(circle at 20% 30%, var(--arena-2) 0 2px, transparent 3px) 0 0 / 46px 46px, var(--arena);
+    margin: 0; min-height: 100vh; display: flex; align-items: stretch;
+    font: 14px/1.3 ui-rounded, system-ui, sans-serif; color: var(--tinta);
+    background: var(--arena) 0 0 / 48px 48px, #ebc58b; image-rendering: pixelated;
   }
-  body { display: flex; align-items: flex-start; }
   main {
-    flex: 1; display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr)); grid-template-rows: repeat(3, 250px);
-    gap: 28px; padding: 28px; max-width: 1400px; margin: 0 auto;
+    position: relative; flex: 1; display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr)); grid-template-rows: repeat(3, 260px);
+    gap: 34px; padding: 34px; max-width: 1400px; margin: 0 auto; align-content: start;
+    /* Caminos de arena clara que unen las salas con la plaza de Whis. */
+    background:
+      linear-gradient(transparent calc(50% - 16px), var(--camino) calc(50% - 16px) calc(50% + 16px), transparent calc(50% + 16px)),
+      linear-gradient(90deg, transparent calc(50% - 16px), var(--camino) calc(50% - 16px) calc(50% + 16px), transparent calc(50% + 16px));
   }
+  .roca { position: absolute; width: 48px; height: 48px; pointer-events: none; }
   .sala {
-    position: relative; display: flex; flex-direction: column; border: 4px solid var(--borde); border-radius: 6px;
-    background: var(--suelo, #eee); box-shadow: 0 6px 0 #0003; overflow: hidden;
+    position: relative; z-index: 1; display: flex; flex-direction: column; border: 4px solid var(--borde); border-radius: 6px;
+    background: #fff; box-shadow: 0 6px 0 #0003; overflow: hidden;
   }
   .sala header {
-    display: flex; gap: 6px; align-items: baseline; padding: 5px 8px; background: #1f2b6bdd; color: #fff;
+    display: flex; gap: 6px; align-items: baseline; padding: 5px 8px; background: #1f2b6bee; color: #fff;
     font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .sala header small { font-weight: 500; opacity: .8; overflow: hidden; text-overflow: ellipsis; }
   .sala header .punto { width: 8px; height: 8px; border-radius: 50%; background: #8a8fa8; flex: none; align-self: center; }
   .sala[data-estado="trabaja"] header .punto { background: #7dff6b; box-shadow: 0 0 6px #7dff6b; }
   .sala[data-estado="falló"] header .punto { background: #ff5a4e; }
-  /* Suelo de baldosas hecho con gradientes, teñido con el color del personaje. */
+  /* Pared arriba (franja del color de la sala) y suelo de baldosas de pixel art debajo. */
   .suelo {
-    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 8px;
-    background:
-      linear-gradient(90deg, #0001 1px, transparent 1px) 0 0 / 24px 24px,
-      linear-gradient(#0001 1px, transparent 1px) 0 0 / 24px 24px,
-      color-mix(in srgb, var(--color) 22%, #fff8ec);
+    flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    gap: 6px; padding: 8px 8px 14px;
+    background: linear-gradient(var(--pared) 0 34%, #0003 34% calc(34% + 4px), transparent calc(34% + 4px)), var(--suelo) 0 0 / 32px 32px;
   }
-  .avatar { width: 72px; height: 72px; image-rendering: pixelated; filter: drop-shadow(0 4px 0 #0004); }
-  .sala[data-estado="libre"] .avatar, .sala[data-estado="terminó"] .avatar { opacity: .85; }
+  .mueble { position: absolute; width: 48px; height: 48px; pointer-events: none; filter: drop-shadow(0 3px 0 #0003); }
+  .avatar { position: relative; z-index: 1; width: 72px; height: 72px; filter: drop-shadow(0 4px 0 #0004); }
+  .sala[data-estado="libre"] .avatar, .sala[data-estado="terminó"] .avatar { opacity: .9; }
   .sala[data-estado="trabaja"] .avatar { animation: salto .9s steps(2) infinite; }
   .sala[data-aura="SSJ"] .avatar { filter: drop-shadow(0 0 6px #f2c230) drop-shadow(0 0 12px #f2c230); }
   .sala[data-aura="SSJ Blue"] .avatar { filter: drop-shadow(0 0 6px #3fb6f0) drop-shadow(0 0 12px #3fb6f0); }
   @keyframes salto { 50% { transform: translateY(-5px); } }
   .globo {
-    max-width: 92%;
-    padding: 5px 9px; border: 2px solid var(--tinta); border-radius: 10px; background: #fff; font-size: 12px; font-weight: 600;
-    text-align: center; box-shadow: 0 3px 0 #0003;
+    position: relative; z-index: 2; max-width: 92%; padding: 5px 9px; border: 2px solid var(--tinta); border-radius: 10px;
+    background: #fff; font-size: 12px; font-weight: 600; text-align: center; box-shadow: 0 3px 0 #0003;
   }
   .globo:empty { display: none; }
-  .estado { padding: 5px 8px; background: #fffc; font-size: 12px; min-height: 2.6em; }
+  .estado { padding: 5px 8px; background: #fffffff2; font-size: 12px; min-height: 2.6em; }
   .estado b { color: var(--color); }
   .sala[data-estado="falló"] .estado b { color: #c8321e; }
   .ssj { font-weight: 800; }
   .plaza {
-    grid-column: 2 / 4; grid-row: 2; display: grid; place-items: center; text-align: center; border-radius: 50%;
-    background: radial-gradient(circle closest-side, #1d5a6a 0 62%, #123a46 63% 98%, transparent 100%);
+    position: relative; z-index: 1; grid-column: 2 / 4; grid-row: 2; display: grid; place-items: center; text-align: center;
+    background: radial-gradient(circle closest-side, #1d5a6a 0 62%, #123a46 63% 96%, #0d2a33 97% 99%, transparent 100%);
   }
-  .plaza .avatar { width: 88px; height: 88px; }
+  .plaza .fuente { width: 64px; height: 64px; display: block; margin: 0 auto -8px; }
+  .plaza .avatar { width: 80px; height: 80px; }
   .plaza p { margin: 6px 0 0; color: #fff; font-weight: 700; text-shadow: 0 2px 0 #0008; }
-  #vivo {
-    position: sticky; top: 28px; flex: none; width: 320px; max-height: calc(100vh - 56px); overflow: auto; margin: 28px 28px 28px 0; padding: 10px 12px;
-    background: #141833ee; color: #e8eaf6; border-radius: 8px; font-size: 12px;
+  /* Mar a la derecha: la isla con su casita y el feed «En vivo». */
+  .mar {
+    flex: none; width: 360px; padding: 34px 20px; display: flex; flex-direction: column; gap: 24px;
+    background: var(--agua) 0 0 / 48px 48px, #4696e1; border-left: 6px dashed #fff8;
   }
+  .isla {
+    align-self: center; position: relative; width: 220px; height: 150px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 55%, #ebc58b 0 58%, #d8ab6a 59% 68%, transparent 69%);
+  }
+  .isla .casita { position: absolute; left: 70px; top: 20px; width: 80px; height: 80px; }
+  .isla .palmera { position: absolute; width: 64px; height: 64px; top: 30px; }
+  .isla .palmera:first-of-type { left: 12px; }
+  .isla .palmera:last-of-type { right: 12px; transform: scaleX(-1); }
+  .isla span {
+    position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); padding: 2px 8px; border-radius: 6px;
+    background: #1f2b6bee; color: #fff; font-weight: 700; font-size: 12px; white-space: nowrap;
+  }
+  #vivo { max-height: calc(100vh - 290px); overflow: auto; padding: 10px 12px; background: #141833ee; color: #e8eaf6; border-radius: 8px; font-size: 12px; }
   #vivo h2 { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em; color: #7dff6b; }
   #vivo ol { list-style: none; margin: 0; padding: 0; }
   #vivo li { padding: 5px 0 5px 8px; border-left: 3px solid var(--color, #888); margin-bottom: 4px; }
@@ -74,10 +92,14 @@
 <body>
 <main id="mapa" aria-label="Mapa del equipo">
   <section class="plaza" id="whis">
-    <div><img class="avatar" alt="Whis"><p id="resumen">Conectando…</p></div>
+    <div><img class="fuente" alt=""><img class="avatar" alt="Whis"><p id="resumen">Conectando…</p></div>
   </section>
 </main>
-<aside id="vivo" aria-live="polite"><h2>● EN VIVO</h2><ol id="feed"></ol></aside>
+<div class="mar">
+  <div class="isla" aria-hidden="true"><img class="palmera" alt=""><img class="casita" alt=""><img class="palmera" alt=""><span>Isla de Roshi</span></div>
+  <aside id="vivo" aria-live="polite"><h2>● EN VIVO</h2><ol id="feed"></ol></aside>
+</div>
+<script src="/arte.js"></script>
 <script src="/mapa.js"></script>
 </body>
 </html>

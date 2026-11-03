@@ -68,9 +68,9 @@ createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'" })
     return res.end(readFileSync(join(raiz, 'visor', 'index.html')))
   }
-  if (req.url === '/mapa.js') {
+  if (req.url === '/mapa.js' || req.url === '/arte.js') {
     res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8' })
-    return res.end(readFileSync(join(raiz, 'visor', 'mapa.js')))
+    return res.end(readFileSync(join(raiz, 'visor', req.url.slice(1))))
   }
   res.writeHead(404).end()
 }).listen(puerto, '127.0.0.1', () => console.log(`Mapa del equipo en http://localhost:${puerto}`))
