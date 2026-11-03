@@ -31,7 +31,7 @@ function enriquecer(linea) {
 }
 
 const equipo = Object.fromEntries(Object.entries(EQUIPO).map(([rol, p]) => [rol, { nombre: p.nombre, color: p.color, avatar: AVATARES[rol] }]))
-equipo.whis = { nombre: 'Whis', color: '#c8c8dc', avatar: AVATARES.whis }
+equipo.lider = { nombre: 'Hitto', color: '#9b6fd0', avatar: AVATARES.lider }
 
 const clientes = new Set()
 let leido = statSync(archivo).size
@@ -67,6 +67,12 @@ createServer((req, res) => {
   if (req.url === '/' || req.url === '/index.html') {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'" })
     return res.end(readFileSync(join(raiz, 'visor', 'index.html')))
+  }
+  // Sprites de visor/sprites (hojas PNG e índice): solo nombres simples, sin rutas.
+  const sprite = req.url?.match(/^\/sprites\/([a-z-]+\.(png|json))$/)
+  if (sprite && existsSync(join(raiz, 'visor', 'sprites', sprite[1]))) {
+    res.writeHead(200, { 'Content-Type': sprite[2] === 'png' ? 'image/png' : 'application/json' })
+    return res.end(readFileSync(join(raiz, 'visor', 'sprites', sprite[1])))
   }
   if (req.url === '/mapa.js' || req.url === '/arte.js') {
     res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8' })

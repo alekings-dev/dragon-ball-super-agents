@@ -16,7 +16,7 @@
   main {
     position: relative; flex: 1; display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr)); grid-template-rows: repeat(3, 260px);
     gap: 34px; padding: 34px; max-width: 1400px; margin: 0 auto; align-content: start;
-    /* Caminos de arena clara que unen las salas con la plaza de Whis. */
+    /* Caminos de arena clara que unen las salas con la plaza de Hitto. */
     background:
       linear-gradient(transparent calc(50% - 16px), var(--camino) calc(50% - 16px) calc(50% + 16px), transparent calc(50% + 16px)),
       linear-gradient(90deg, transparent calc(50% - 16px), var(--camino) calc(50% - 16px) calc(50% + 16px), transparent calc(50% + 16px));
@@ -46,9 +46,15 @@
   .sala[data-estado="trabaja"] .avatar { animation: salto .9s steps(2) infinite; }
   .sala[data-aura="SSJ"] .avatar { filter: drop-shadow(0 0 6px #f2c230) drop-shadow(0 0 12px #f2c230); }
   .sala[data-aura="SSJ Blue"] .avatar { filter: drop-shadow(0 0 6px #3fb6f0) drop-shadow(0 0 12px #3fb6f0); }
+  /* Personajes con hoja de sprites (visor/sprites): el cuadro lo mueve mapa.js con background-position. */
+  .pj { position: relative; z-index: 1; flex: none; background-repeat: no-repeat; image-rendering: pixelated; filter: drop-shadow(0 3px 0 #0004); }
+  .sala[data-aura="SSJ"] .pj { filter: drop-shadow(0 0 4px #f2c230) drop-shadow(0 0 10px #f2c23088); }
+  .sala[data-aura="SSJ Blue"] .pj { filter: drop-shadow(0 0 4px #3fb6f0) drop-shadow(0 0 10px #3fb6f088); }
+  #capa { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+  #capa .pj { position: absolute; left: 0; top: 0; }
   @keyframes salto { 50% { transform: translateY(-5px); } }
   .globo {
-    position: relative; z-index: 2; max-width: 92%; padding: 5px 9px; border: 2px solid var(--tinta); border-radius: 10px;
+    position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: max-content; z-index: 2; max-width: 92%; padding: 5px 9px; border: 2px solid var(--tinta); border-radius: 10px;
     background: #fff; font-size: 12px; font-weight: 600; text-align: center; box-shadow: 0 3px 0 #0003;
   }
   .globo:empty { display: none; }
@@ -62,6 +68,7 @@
   }
   .plaza .fuente { width: 64px; height: 64px; display: block; margin: 0 auto -8px; }
   .plaza .avatar { width: 80px; height: 80px; }
+  .plaza .pj { margin: 0 auto; }
   .plaza p { margin: 6px 0 0; color: #fff; font-weight: 700; text-shadow: 0 2px 0 #0008; }
   /* Mar a la derecha: la isla con su casita y el feed «En vivo». */
   .mar {
@@ -92,7 +99,7 @@
 <body>
 <main id="mapa" aria-label="Mapa del equipo">
   <section class="plaza" id="whis">
-    <div><img class="fuente" alt=""><img class="avatar" alt="Whis"><p id="resumen">Conectando…</p></div>
+    <div><img class="fuente" alt=""><img class="avatar" alt="Hitto"><p id="resumen">Conectando…</p></div>
   </section>
 </main>
 <div class="mar">
