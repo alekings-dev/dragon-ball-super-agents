@@ -1,5 +1,7 @@
 # equipo-dbs · Dragon Ball Super Agents
 
+**Español** · [English](README.en.md)
+
 Un equipo de agentes para [Claude Code](https://claude.com/claude-code) (y Cursor) con personajes de Dragon Ball Super. Hit, el líder, toma una issue de Linear, la reparte entre diez especialistas, revisa lo que le devuelven, abre el PR y lo integra. Mientras tanto puedes ver al equipo trabajando en un mapa en el navegador y escuchar a cada personaje cuando entrega.
 
 ![Mapa del equipo: una sala por especialista, Hit al centro y el feed «En vivo»](docs/mapa.jpg)
