@@ -17,6 +17,8 @@ case "$esfuerzo" in
      [ "$modelo" = opus ] && [ "$base" != opus ] && nivel=ssj || exit 0 ;;
 esac
 
+. "$dir/turno.sh"
+esperar_turno || exit 0
 audio="$dir/voces/$rol-$nivel.mp3"
 if [ -s "$audio" ]; then afplay "$audio" 2>/dev/null && exit 0; fi
 frase=$(awk -F '\t' -v r="$rol" -v n="$nivel" '$1==r && $2==n {print $3}' "$dir/transformaciones.tsv")

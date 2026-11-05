@@ -1,7 +1,7 @@
 {
   "hooks": {
-    "SubagentStop": [{"hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/agente-termina.sh", "async": true, "timeout": 15}, {"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/evento.sh", "async": true, "timeout": 10}]}],
-    "Stop": [{"hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/agente-termina.sh", "async": true, "timeout": 15}]}],
-    "PreToolUse": [{"matcher": "Agent|Task", "hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/transformacion.sh", "async": true, "timeout": 15}, {"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/evento.sh", "async": true, "timeout": 10}]}]
+    "SubagentStop": [{"hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/agente-termina.sh", "async": true, "timeout": 90}, {"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/evento.sh", "async": true, "timeout": 10}]}],
+    "Stop": [{"hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/agente-termina.sh", "async": true, "timeout": 90}]}],
+    "PreToolUse": [{"matcher": "Agent|Task", "hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/transformacion.sh", "async": true, "timeout": 90}, {"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/evento.sh", "async": true, "timeout": 10}]}]
   }
 }

@@ -25,6 +25,9 @@ case "$agente" in
   *)              exit 0 ;;
 esac
 
+. "$(dirname "$0")/turno.sh"
+esperar_turno || exit 0
+
 # Bloqueo: Freezer con hallazgo «Bloquea», QA con fallos nuevos o ❌, o cualquier rol que diga que no integró.
 audio="$(dirname "$0")/voces/$agente.mp3"
 if printf '%s' "$mensaje" | grep -qE '\*\*Bloquea\*\*|nuevos: [1-9]|❌|[Nn]o integré'; then
