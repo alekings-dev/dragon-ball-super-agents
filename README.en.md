@@ -8,6 +8,8 @@ A team of agents for [Claude Code](https://claude.com/claude-code), Cursor and [
 
 > Fan project, non-commercial. Dragon Ball and its characters belong to their owners (see [Credits](#credits)).
 >
+> **What's new in 0.10.0:** the repo is also an **OpenCode V2** plugin. It ships the 10 agents, the 3 skills, the `/resolver-issue`, `/mapa` and `/configurar-modelos` commands, the `/equipo` TUI panel, voices and the map. Claude Code and Cursor keep working the same.
+>
 > **Language note:** the agents, skills, voices and map are in Spanish. The agents answer in Spanish by default; you can tell them to use another language in your project's `.claude/equipo/proyecto.md`.
 
 ## What's inside
@@ -18,6 +20,15 @@ A team of agents for [Claude Code](https://claude.com/claude-code), Cursor and [
 - **Panel** (`/equipo`): in the Claude Code terminal, who is working, on what and for how long, with pixel-art avatars. In the OpenCode TUI it shows the same with the team's emoticons.
 - **Voices:** each character says their line when they finish and shouts when they transform. They take turns and never talk over each other.
 - **Transformations:** Hit tunes each specialist's power to the task's difficulty. **Super Saiyan** = `model: opus`. **Super Saiyan Blue** = `opus` with `effort: high` (in OpenCode, `provider/model#high`).
+
+| Feature | Claude Code | Cursor | OpenCode |
+| --- | --- | --- | --- |
+| 10 agents | ✅ | ✅ | ✅ |
+| Skills | ✅ | ✅ | ✅ |
+| Panel | ✅ pixel art | — | ✅ emoticons (TUI) |
+| Voices | ✅ macOS | — | ✅ macOS |
+| Map | ✅ | — | ✅ |
+| Commands | `/equipo-dbs:*` | — | `/resolver-issue`, `/mapa`, `/configurar-modelos`, `/equipo` |
 
 | Role | Character | What for |
 | --- | --- | --- |
@@ -76,19 +87,114 @@ The first time you use `resolver-issue` in a repo, Hit runs `configurar-modelos`
 
 ### OpenCode
 
-The repo is also an OpenCode V2 plugin (2.3 or newer):
+The repo is an **OpenCode V2** plugin (2.3 or newer) with a server part and a TUI part. The plugin registers the skills and commands, and copies the agents into your configuration.
+
+#### As a package (recommended)
 
 ```sh
 opencode plugin add github:alekings-dev/dragon-ball-super-agents
 ```
 
-On load it installs any missing agents into `~/.config/opencode/agents/equipo-dbs/` and reloads the agent list. The commands are `/resolver-issue ABC-12`, `/mapa`, `/configurar-modelos` and `/equipo` (TUI panel). For a local directory install, a different agent destination or model changes, see [docs/opencode.md](docs/opencode.md).
+On first load it installs any missing agents into `~/.config/opencode/agents/equipo-dbs/` and reloads the agent list. It never overwrites existing files.
+
+#### As a local directory
+
+```sh
+git clone https://github.com/alekings-dev/dragon-ball-super-agents ~/.config/opencode/plugins/dragon-ball-super-agents
+```
+
+Then add the absolute path to `opencode.json(c)`:
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": ["/Users/your-user/.config/opencode/plugins/dragon-ball-super-agents"]
+}
+```
+
+OpenCode also discovers packages inside `~/.config/opencode/plugins/` and `.opencode/plugins/`.
+
+#### Where the agents live
+
+| Option | What it does |
+| --- | --- |
+| `"global"` (default) | Installs them into `~/.config/opencode/agents/equipo-dbs/` |
+| `"project"` | Installs them into `<project>/.opencode/agents/equipo-dbs/` |
+| `"off"` | Installs nothing; useful if you version them in the repo |
+
+```jsonc
+{
+  "plugins": [
+    { "package": "/path/to/repo", "options": { "agents": "project" } }
+  ]
+}
+```
+
+To install or update them by hand (from a clone of the repo):
+
+```sh
+node opencode/scripts/instalar-agentes.mjs --global
+node opencode/scripts/instalar-agentes.mjs --project /path/to/repo --force
+```
+
+#### Commands and skills
+
+| Action | OpenCode |
+| --- | --- |
+| Pick up an issue | `/resolver-issue ABC-12` |
+| Open the map | `/mapa` |
+| Choose models | `/configurar-modelos` |
+| Open the panel | `/equipo` (TUI only) |
+| Load a skill | `@resolver-issue`, `@mapa`, `@configurar-modelos` |
+
+The agents are named `equipo-dbs/<role>` (for example `equipo-dbs/backend`). Hit stays as the primary agent or skill: do not turn him into `mode: subagent`, because the default nesting depth is one and he would not be able to launch the specialists.
+
+#### Models
+
+The defaults live in `opencode/modelos.json`:
+
+```json
+{
+  "opus": "opencode/claude-opus-5-5",
+  "sonnet": "opencode/claude-sonnet-5-5",
+  "haiku": "opencode/claude-haiku-5-5"
+}
+```
+
+Replace them with your provider's IDs (`opencode models` lists them). Then:
+
+```sh
+node opencode/scripts/generar-agentes.mjs
+node opencode/scripts/instalar-agentes.mjs --global --force
+```
+
+You can also edit only the `model:` line of each installed agent or run `/configurar-modelos`. For Super Saiyan Blue use a variant: `opencode/claude-opus-5-5#high`.
+
+#### What works and what changes
+
+| Piece | In OpenCode |
+| --- | --- |
+| Agents | ✅ 10 `equipo-dbs/<role>` subagents |
+| Skills and commands | ✅ registered by the plugin |
+| Panel | ✅ `/equipo` in the TUI, with emoticons (no pixel-art avatars) |
+| Voices | ✅ macOS + `jq`; reuses the scripts |
+| Map | ✅ same viewer; the plugin writes `eventos.jsonl` |
+| Transformations | ✅ `provider/model#high` |
+
+Things to keep in mind:
+
+- OpenCode subagents **do not block**: `subagent` returns a `sessionID` and the report arrives later as a `<subagent>` message.
+- MCP tools change names: `mcp__linear-server__get_issue` becomes `linear-server_get_issue`.
+- Claude's `tools:` are translated into `permissions`: read-only agents get `edit` denied and agents without `Bash` get `shell` denied.
+- The panel only exists in the TUI; the desktop app has no panel.
+
+If something does not show up: `/reload`, check `~/.config/opencode/agents/equipo-dbs/` and run the installer. The detailed guide is in [docs/opencode.md](docs/opencode.md).
 
 ## Getting started
 
 1. In your repo, create `.claude/equipo/proyecto.md` with what's specific to your project. You can use the [template](#proyectomd-template). The team is generic: everything repo-specific goes in that file.
 2. Ask Claude: «toma la issue ABC-12» ("take issue ABC-12") or `/equipo-dbs:resolver-issue ABC-12`. In OpenCode: `/resolver-issue ABC-12`.
-3. To watch the team, ask «abre el mapa del equipo» ("open the team map") or run `node scripts/visor.mjs` from the plugin folder and open <http://localhost:4321>.
+3. To watch the team, ask «abre el mapa del equipo» ("open the team map"), use `/mapa` in OpenCode, or run `node scripts/visor.mjs` from the plugin folder and open <http://localhost:4321>.
 
 What each role learns is saved in `.claude/equipo/bitacora/<role>.md` and read in the following issues. Commit `.claude/equipo/` along with your code.
 
@@ -162,6 +268,31 @@ Without audio files, the plugin falls back to the system voice (`say`).
 - **Panel avatars:** original pixel art (16×16), generated by `scripts/generar-avatares.py` into `hooks/avatares.ts`. They render in terminals with graphics support (Kitty, iTerm2, WezTerm, Ghostty); elsewhere the character's emoticon is shown. Claude Code only; the OpenCode panel always uses the emoticon.
 - **Map characters:** fan-made sprites. `scripts/importar-sprites.py` removes their background and builds one sheet per role (idle, walk, aura, deliver, fall); requires Pillow.
 - **Map backgrounds:** AI-generated illustrations, in `visor/fondos/`.
+
+### OpenCode plugin
+
+OpenCode support lives in `opencode/`:
+
+- `package.json` (root): npm manifest with `exports` for the server part and the TUI part; it is what makes `opencode plugin add` work.
+- `opencode/src/index.ts`: server part; registers skills and commands, installs agents, connects the `subagent` hooks and listens to `session.execution.*`.
+- `opencode/src/tui.tsx`: the `/equipo` TUI panel.
+- `opencode/agentes/equipo-dbs/`: the 10 agents generated from `agents/`.
+- `opencode/scripts/generar-agentes.mjs`: translates the Claude/Cursor frontmatter to OpenCode; `--check` fails when they drift.
+- `opencode/scripts/instalar-agentes.mjs`: installs or updates the agents in the global or project configuration.
+- `opencode/modelos.json`: models per tier (`opus`, `sonnet`, `haiku`).
+- `opencode/test/`: tests for role/model normalization and agent synchronization.
+- `docs/opencode.md`: detailed guide for installation, models, differences and common issues.
+
+The Claude/Cursor agents are the source; after editing them, run `node opencode/scripts/generar-agentes.mjs`.
+
+### Tests
+
+```sh
+sh hooks/evento.test.sh
+sh hooks/turno.test.sh
+node --test opencode/test/*.test.mjs
+node opencode/scripts/generar-agentes.mjs --check
+```
 
 ## Credits
 
