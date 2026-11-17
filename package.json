@@ -1,0 +1,50 @@
+{
+  "name": "equipo-dbs",
+  "version": "0.10.0",
+  "description": "Equipo de agentes Dragon Ball Super para OpenCode, Claude Code y Cursor: líder, especialistas, panel, voces y mapa",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alekings-dev/dragon-ball-super-agents"
+  },
+  "keywords": ["opencode", "opencode-plugin", "agents", "dragon-ball"],
+  "exports": {
+    ".": "./opencode/src/index.ts",
+    "./tui": "./opencode/src/tui.tsx"
+  },
+  "files": [
+    "opencode/src",
+    "opencode/agentes",
+    "opencode/scripts",
+    "opencode/modelos.json",
+    "skills",
+    "agents",
+    "types",
+    "docs",
+    "scripts/visor.mjs",
+    "visor",
+    "hooks/equipo.ts",
+    "hooks/avatares.ts",
+    "hooks/agente-termina.sh",
+    "hooks/transformacion.sh",
+    "hooks/turno.sh",
+    "hooks/voces",
+    "hooks/voces.tsv",
+    "hooks/transformaciones.tsv"
+  ],
+  "dependencies": {
+    "@opencode/plugin": "^2.3.0"
+  },
+  "peerDependencies": {
+    "@opentui/core": ">=0.6.6",
+    "@opentui/solid": ">=0.6.6",
+    "solid-js": ">=1.9.0"
+  },
+  "scripts": {
+    "opencode:generar-agentes": "node opencode/scripts/generar-agentes.mjs",
+    "opencode:check-agentes": "node opencode/scripts/generar-agentes.mjs --check",
+    "opencode:instalar-agentes": "node opencode/scripts/instalar-agentes.mjs --global",
+    "test:opencode": "node --test opencode/test/*.test.mjs"
+  }
+}

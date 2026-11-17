@@ -22,11 +22,18 @@ Argumento: la issue (con el prefijo de `proyecto.md`). Si no viene, pregúntala.
 - Las preguntas a la persona van con tu herramienta de preguntas si la hay; si no, en el chat. Para corregir a un especialista, relánzalo con la corrección (o reanúdalo por su ID si Task lo permite).
 - No hay panel ni voces en Cursor.
 
+**En OpenCode** (V2):
+- Los especialistas están instalados como `equipo-dbs/<rol>` (o `<rol>` si se instalaron planos) y son subagentes. Compruébalo en la lista de agentes; si faltan, avisa: el plugin los instala en `~/.config/opencode/agents/equipo-dbs/` al cargar (o en `.opencode/agents/equipo-dbs/` si se configuró `agents: "project"`).
+- Delegas con la herramienta `subagent` (`agent: "equipo-dbs/<rol>"`, `description`, `prompt`). **No bloquea:** devuelve un `sessionID` y el reporte llega después como mensaje `<subagent>`; no te quedes esperando en el mismo paso. Puedes seguir trabajando y esperar los reportes.
+- Para corregir o continuar a un especialista, vuelve a llamar a `subagent` con su `sessionID`.
+- Transformaciones: Super Saiyan es el modelo `opus` de tu proveedor; Super Saiyan Blue es ese mismo con `#high` (por ejemplo `opencode/claude-opus-5-5#high`). Pásalo en `model` al lanzar el subagente; si tu versión no lo acepta, el especialista usa el de su archivo y lo dices en el plan.
+- Preguntas: `question`. Linear: `linear-server_get_issue`, `linear-server_list_comments`, `linear-server_extract_images`. Archivos: `read` y `shell`. El panel se abre con `/equipo` en la TUI; no hay avatares pixel-art, pero sí voces en macOS y el mapa.
+
 ## 1. Entender (tú)
 1. `get_issue` y `list_comments` de la issue. Mockups con `extract_images` (pásale la descripción completa).
    - Los especialistas no pueden abrir las imágenes de Linear: las URLs vienen firmadas y vencen en minutos. Por eso cada mockup se guarda como archivo local.
    - El resultado de `extract_images` indica dónde quedó cada imagen (`[Image: source: <ruta>]`). Cópiala a `<scratchpad>/mockups/<issue>-<nombre-del-mockup>.<ext>` (el scratchpad es el de esta sesión; usa la ruta absoluta).
-   - Esa ruta absoluta va en el prompt de `producto` y `critico-diseno`: «el mockup está en <ruta>; ábrelo con Read». Si la issue no tiene mockup, díselo explícitamente.
+   - Esa ruta absoluta va en el prompt de `producto` y `critico-diseno`: «el mockup está en <ruta>; ábrelo con `Read` (Claude) o `read` (OpenCode)». Si la issue no tiene mockup, díselo explícitamente.
 2. **Contexto del proyecto:** si `proyecto.md` nombra documentos de contexto (informe UX, decisiones previas, mockups en PDF), busca ahí lo que toca la issue, sus decisiones y las issues hermanas, para no duplicar ni contradecir lo decidido.
 3. Asígnala a «me» y pásala a In Progress.
 4. Rama: `git fetch origin` y `git checkout -b <gitBranchName> origin/<base>` (si el árbol no está limpio, detente y avisa).
@@ -55,10 +62,10 @@ Una issue chica de estilo puede ser solo `frontend` → `qa` → `critico-diseno
 
 Arma el plan: tareas concretas, rol de cada una, dependencias (qué corre en paralelo) y decisiones abiertas.
 
-**Punto de control:** muéstrale el plan a la persona a cargo en pocas líneas (tareas → rol, decisiones que tomaste y por qué, preguntas). Si hay decisiones de producto o alternativas con impacto real, pregunta con `AskUserQuestion` y espera. Si el plan es directo y sin decisiones abiertas, informa y sigue.
+**Punto de control:** muéstrale el plan a la persona a cargo en pocas líneas (tareas → rol, decisiones que tomaste y por qué, preguntas). Si hay decisiones de producto o alternativas con impacto real, pregunta con tu herramienta de preguntas (`AskUserQuestion` en Claude, `question` en OpenCode) y espera. Si el plan es directo y sin decisiones abiertas, informa y sigue.
 
 ## 3. Delegar
-Usa la herramienta `Agent` con `subagent_type` = `equipo-dbs:<rol>` (por ejemplo `equipo-dbs:backend`). Cada prompt debe ser autosuficiente (el especialista no ve esta conversación):
+Usa la herramienta `Agent` con `subagent_type` = `equipo-dbs:<rol>` (por ejemplo `equipo-dbs:backend`); en OpenCode es `subagent` con `agent` = `equipo-dbs/<rol>`. Cada prompt debe ser autosuficiente (el especialista no ve esta conversación):
 - issue (id, título, link) y la tarea concreta que le toca, con criterios de terminado;
 - archivos y símbolos relevantes que ya encontraste, y el diseño acordado (si pasó por `arquitecto`);
 - a `producto`, `frontend`, `critico-diseno` y `escritor`: los documentos de contexto que indique `proyecto.md` (reglas de diseño, tono, decisiones previas) y lo que encontraste ahí;
@@ -74,7 +81,7 @@ Esta skill autoriza explícitamente ese uso de `effort`. No transformes por cost
 Lanza en el mismo mensaje las tareas independientes. Encadena las dependientes (por ejemplo, `arquitecto` → `backend` y `frontend` en paralelo → `qa`).
 
 ## 4. Integrar y revisar
-1. Lee cada reporte con ojo crítico: ¿hizo lo pedido?, ¿las decisiones tienen sentido?, ¿lo «verificado» se corrió de verdad? Si algo no cuadra, devuélvelo al mismo rol (`SendMessage` si sigue disponible) con la corrección puntual.
+1. Lee cada reporte con ojo crítico: ¿hizo lo pedido?, ¿las decisiones tienen sentido?, ¿lo «verificado» se corrió de verdad? Si algo no cuadra, devuélvelo al mismo rol (`SendMessage` en Claude; en OpenCode, `subagent` con el `sessionID`) con la corrección puntual.
 2. Corre tú las verificaciones finales que indique `proyecto.md`.
 3. Revisión en paralelo sobre el diff completo:
    - `seguridad` (siempre que haya código, incluido el que escribiste tú; solo se omite si el diff es solo documentación);

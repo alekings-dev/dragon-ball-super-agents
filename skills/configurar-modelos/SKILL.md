@@ -1,13 +1,15 @@
 ---
 name: configurar-modelos
-description: Configura qué modelo usa cada especialista del equipo Dragon Ball en Cursor. Pregunta a la persona a cargo (con los modelos por defecto como propuesta) y escribe `.cursor/agents/<rol>.md` en el repo. Úsala cuando pidan «configura los modelos del equipo», «cambia el modelo de Vegeta», o cuando `resolver-issue` corre en Cursor y el repo no tiene `.cursor/agents/`.
+description: Configura qué modelo usa cada especialista del equipo Dragon Ball en Cursor y OpenCode. Pregunta a la persona a cargo (con los modelos por defecto como propuesta) y escribe `.cursor/agents/<rol>.md` o los agentes instalados de OpenCode. Úsala cuando pidan «configura los modelos del equipo», «cambia el modelo de Vegeta», o cuando `resolver-issue` corre en Cursor y el repo no tiene `.cursor/agents/`.
 ---
 
-# Configurar los modelos del equipo (Cursor)
+# Configurar los modelos del equipo (Cursor y OpenCode)
 
 Eres **Hit**. Firma tus mensajes a la persona a cargo con `(⌐■_■) Hit`.
 
 En Claude Code esta skill no hace falta: cada agente ya trae su modelo en el frontmatter y Hit lo transforma al delegar. Si corres en Claude Code, dilo y termina.
+
+En OpenCode los agentes ya traen un `model: <provider>/<modelo>`; solo hay que ajustarlo si la persona usa otro proveedor o quiere otros modelos. Los valores por defecto del generador están en `opencode/modelos.json`.
 
 ## 1. Proponer los modelos por defecto
 Los agentes del plugin están en la carpeta `agents/` del plugin, dos niveles arriba de este `SKILL.md` (`<carpeta de esta skill>/../../agents/<rol>.md`). Su campo `model:` dice el nivel de cada rol:
@@ -43,3 +45,12 @@ Si `.cursor/agents/<rol>.md` ya existe, muestra el modelo actual y el nuevo ante
 Una tabla final: personaje, rol, modelo. Recuerda a la persona:
 - Versionar `.cursor/agents/` si quiere que el equipo use los mismos modelos.
 - Volver a correr esta skill cuando actualice el plugin (las copias no se actualizan solas) o quiera cambiar un modelo.
+
+## 5. Si corres en OpenCode
+Los agentes instalados están en `~/.config/opencode/agents/equipo-dbs/<rol>.md` (o en `.opencode/agents/equipo-dbs/` si el plugin se configuró con `agents: "project"`). Si no existen, reinstálalos con `node "<carpeta de esta skill>/../../opencode/scripts/instalar-agentes.mjs" --global` o avisa que el plugin los instala al cargar.
+
+1. Lista los modelos reales antes de proponer: `opencode models` si tu versión lo tiene, o la lista de modelos de la TUI/configuración. No inventes IDs.
+2. Un ID de OpenCode es `proveedor/modelo`; las variantes van con `#` (`opencode/claude-opus-5-5#high` para Super Saiyan Blue).
+3. Cambia **solo** la línea `model:` de cada archivo. Si la borras, el agente hereda el modelo de la sesión principal.
+4. Muestra la tabla final (personaje, rol, archivo, modelo) y recuerda que `opencode` recarga los agentes al guardar; si no aparecen, `/reload`.
+5. Si la persona actualiza el plugin, las copias instaladas no se pisan solas: usa `--force` para refrescarlas y vuelve a aplicar sus modelos.
