@@ -1,7 +1,7 @@
 {
   "name": "equipo-dbs",
-  "version": "0.9.0",
-  "description": "Equipo de agentes con personajes de Dragon Ball Super: líder y especialistas",
+  "version": "0.10.0",
+  "description": "Equipo de agentes Dragon Ball Super para Cursor, Claude Code y OpenCode: líder y especialistas",
   "author": { "name": "Alexis Reyes" },
   "agents": "./agents/",
   "skills": "./skills/"

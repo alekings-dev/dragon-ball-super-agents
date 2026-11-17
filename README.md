@@ -2,7 +2,7 @@
 
 **Español** · [English](README.en.md)
 
-Un equipo de agentes para [Claude Code](https://claude.com/claude-code) (y Cursor) con personajes de Dragon Ball Super. Hit, el líder, toma una issue de Linear, la reparte entre diez especialistas, revisa lo que le devuelven, abre el PR y lo integra. Mientras tanto puedes ver al equipo trabajando en un mapa en el navegador y escuchar a cada personaje cuando entrega.
+Un equipo de agentes para [Claude Code](https://claude.com/claude-code), Cursor y [OpenCode](https://opencode.ai) con personajes de Dragon Ball Super. Hit, el líder, toma una issue de Linear, la reparte entre diez especialistas, revisa lo que le devuelven, abre el PR y lo integra. Mientras tanto puedes ver al equipo trabajando en un mapa en el navegador y escuchar a cada personaje cuando entrega.
 
 ![Mapa del equipo: una sala por especialista, Hit al centro y el feed «En vivo»](docs/mapa.jpg)
 
@@ -10,12 +10,12 @@ Un equipo de agentes para [Claude Code](https://claude.com/claude-code) (y Curso
 
 ## Qué trae
 
-- **10 agentes especialistas** (`agents/`), que se invocan como `equipo-dbs:<rol>`.
-- **Skill `resolver-issue`:** Hit toma una issue («toma la issue ABC-12»), aclara el objetivo y arma un plan. Delega en paralelo, pide revisión de seguridad, QA (con regresión e2e) y diseño, abre el PR y lo integra cuando todo está en verde.
+- **10 agentes especialistas** (`agents/`), que se invocan como `equipo-dbs:<rol>` en Claude Code/Cursor y `equipo-dbs/<rol>` en OpenCode.
+- **Skill `resolver-issue`:** Hit toma una issue («toma la issue ABC-12» o `/resolver-issue ABC-12` en OpenCode), aclara el objetivo y arma un plan. Delega en paralelo, pide revisión de seguridad, QA (con regresión e2e) y diseño, abre el PR y lo integra cuando todo está en verde.
 - **Mapa** (skill `mapa`): una sala por especialista con su sprite. Cuando Hit delega, el personaje camina a su sala; cuando entrega, vuelve a la plaza. Al lado hay un feed «En vivo».
-- **Panel** (`/equipo`): en la terminal, quién trabaja, en qué y cuánto lleva, con avatares de pixel art.
+- **Panel** (`/equipo`): en la terminal de Claude Code, quién trabaja, en qué y cuánto lleva, con avatares de pixel art. En la TUI de OpenCode muestra lo mismo con las caritas del equipo.
 - **Voces:** cada personaje avisa con su frase al terminar y grita al transformarse. Suenan por turno, sin pisarse.
-- **Transformaciones:** Hit ajusta la potencia de cada especialista según la dificultad de la tarea. **Super Saiyan** = `model: opus`. **Super Saiyan Blue** = `opus` con `effort: high`.
+- **Transformaciones:** Hit ajusta la potencia de cada especialista según la dificultad de la tarea. **Super Saiyan** = `model: opus`. **Super Saiyan Blue** = `opus` con `effort: high` (en OpenCode, `provider/modelo#high`).
 
 | Rol | Personaje | Para qué |
 | --- | --- | --- |
@@ -32,12 +32,12 @@ Un equipo de agentes para [Claude Code](https://claude.com/claude-code) (y Curso
 
 ## Requisitos
 
-- Claude Code (o Cursor, sin mapa, panel ni voces).
+- Claude Code, Cursor u OpenCode 2.3 o más nuevo. En Cursor no hay mapa, panel ni voces; en OpenCode el panel es de la TUI y no tiene avatares pixel-art.
 - `git` y [`gh`](https://cli.github.com/) autenticado, para los PRs.
 - Opcionales:
   - Servidor MCP de **Linear**, para leer y actualizar issues. Sin él, le pasas la tarea en el chat.
   - **CodeGraph**, que lo usa el arquitecto si está.
-  - **Node 23.6 o más nuevo** y `jq`, para el mapa.
+  - **Node 23.6 o más nuevo** para el mapa; `jq` para los hooks de Claude Code y para las voces.
   - **macOS**, para las voces (`afplay` y `say`); en otros sistemas el plugin funciona en silencio.
 
 No necesitas ninguna clave ni cuenta extra: los audios ya vienen en el repo.
@@ -72,10 +72,20 @@ Reinicia Cursor y revisa que aparezca en **Settings → Plugins**. Para actualiz
 
 La primera vez que uses `resolver-issue` en un repo, Hit corre `configurar-modelos`. Te propone un modelo por nivel (Opus para Bills y Freezer; Sonnet para los implementadores, QA, producto y diseño; Haiku para el escritor) y lo deja en `.cursor/agents/<rol>.md`. Cursor ignora sin aviso los IDs de modelo que no reconoce, así que la skill solo usa los que confirmes.
 
+### OpenCode
+
+El repo es también un plugin de OpenCode V2 (2.3 o más nuevo):
+
+```sh
+opencode plugin add github:alekings-dev/dragon-ball-super-agents
+```
+
+Al cargar, instala los agentes que falten en `~/.config/opencode/agents/equipo-dbs/` y recarga la lista. Los comandos son `/resolver-issue ABC-12`, `/mapa`, `/configurar-modelos` y `/equipo` (panel de la TUI). Para instalarlo como directorio local, cambiar el destino de los agentes o ajustar los modelos, ver [docs/opencode.md](docs/opencode.md).
+
 ## Primeros pasos
 
 1. En tu repo, crea `.claude/equipo/proyecto.md` con lo propio del proyecto. Puedes usar la [plantilla](#plantilla-de-proyectomd). El equipo es genérico: todo lo específico del repo va en ese archivo.
-2. Pídele a Claude: «toma la issue ABC-12» o `/equipo-dbs:resolver-issue ABC-12`.
+2. Pídele a Claude: «toma la issue ABC-12» o `/equipo-dbs:resolver-issue ABC-12`. En OpenCode: `/resolver-issue ABC-12`.
 3. Si quieres ver al equipo trabajando, pide «abre el mapa del equipo» o corre `node scripts/visor.mjs` desde la carpeta del plugin y abre <http://localhost:4321>.
 
 Lo que aprende cada rol queda en `.claude/equipo/bitacora/<rol>.md` y lo leen en las issues siguientes. Versiona `.claude/equipo/` junto con tu código.
@@ -120,7 +130,7 @@ Patrones y carpetas propias. (Igual para otros roles si hace falta.)
 
 ### Mapa
 
-`hooks/evento.sh` anota cada delegación de Hit (`PreToolUse` de Agent) y cada entrega (`SubagentStop`) en `~/.claude/equipo-dbs/eventos.jsonl`. El archivo se recorta solo a las últimas 500 líneas y nunca sale de tu equipo.
+`hooks/evento.sh` anota cada delegación de Hit (`PreToolUse` de Agent) y cada entrega (`SubagentStop`) en `~/.claude/equipo-dbs/eventos.jsonl`. En OpenCode lo escribe el propio plugin con el mismo formato (sin `jq`). El archivo se recorta solo a las últimas 500 líneas y nunca sale de tu equipo.
 
 `scripts/visor.mjs` sirve `visor/` en `http://localhost:4321` y transmite los eventos por SSE. Escucha solo en `127.0.0.1`. Los nombres, colores, frases y transformaciones salen de `hooks/equipo.ts`, el mismo archivo que usa el panel.
 
@@ -131,7 +141,7 @@ sh hooks/evento.test.sh           # prueba del hook
 
 ### Voces
 
-`hooks/agente-termina.sh` (hooks `SubagentStop` y `Stop`) reproduce la frase de cada personaje cuando entrega. Hit habla cuando su respuesta trae la firma `(⌐■_■) Hit`. Si el reporte trae un bloqueo, como un hallazgo **Bloquea** o fallos nuevos en QA, suena la versión de alerta. `hooks/transformacion.sh` hace gritar al personaje cuando entra transformado.
+`hooks/agente-termina.sh` (hooks `SubagentStop` y `Stop`) reproduce la frase de cada personaje cuando entrega. Hit habla cuando su respuesta trae la firma `(⌐■_■) Hit`. Si el reporte trae un bloqueo, como un hallazgo **Bloquea** o fallos nuevos en QA, suena la versión de alerta. `hooks/transformacion.sh` hace gritar al personaje cuando entra transformado. En OpenCode el plugin invoca estos mismos scripts al terminar cada sesión hija.
 
 Los hooks corren en paralelo, así que `hooks/turno.sh` da la palabra de a uno con un candado en `$TMPDIR`: nadie pisa a nadie, tampoco Hit. Prueba: `sh hooks/turno.test.sh`.
 
@@ -145,7 +155,7 @@ Sin audios, el plugin usa la voz del sistema (`say`).
 
 ### Avatares y sprites
 
-- **Avatares del panel:** son originales de pixel art (16×16), generados por `scripts/generar-avatares.py` en `hooks/avatares.ts`. Se dibujan en terminales con gráficos (Kitty, iTerm2, WezTerm, Ghostty); en las demás aparece la carita del personaje.
+- **Avatares del panel:** son originales de pixel art (16×16), generados por `scripts/generar-avatares.py` en `hooks/avatares.ts`. Se dibujan en terminales con gráficos (Kitty, iTerm2, WezTerm, Ghostty); en las demás aparece la carita del personaje. Solo Claude Code; el panel de OpenCode usa siempre la carita.
 - **Personajes del mapa:** son sprites de fans. `scripts/importar-sprites.py` les quita el fondo y arma una hoja por rol (quieto, camina, aura, entrega, caída); requiere Pillow.
 - **Fondos del mapa:** son ilustraciones generadas con IA, en `visor/fondos/`.
 

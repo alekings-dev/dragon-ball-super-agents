@@ -2,6 +2,10 @@
 
 Contexto que comparten el líder y cada especialista. Lo propio de cada proyecto (producto, stack, comandos, rama base, identidad de commits, Linear, límites y criterios de terminado extra) está en `.claude/equipo/proyecto.md` del repo: léelo también. Si algo aquí choca con `proyecto.md`, gana `proyecto.md`; si choca con lo que pide la issue, gana la issue; si choca con seguridad o con producción, se detiene y se pregunta.
 
+## Herramientas
+- Cada host nombra distinto las mismas herramientas: `Read`/`read`, `Grep`/`grep`, `Glob`/`glob`, `Bash`/`shell`, `Agent`/`subagent`, `AskUserQuestion`/`question`. Usa las de tu host.
+- En OpenCode los MCP se llaman `<servidor>_<herramienta>` (por ejemplo `linear-server_get_issue`) y los subagentes del equipo son `equipo-dbs/<rol>`.
+
 ## Git y PRs
 - Rama desde `origin/<base>` (la rama base de `proyecto.md`) con el `gitBranchName` de Linear. PR **solo** hacia la rama base. Nunca deploy a producción.
 - Commits con la identidad y los prefijos que indique `proyecto.md`.

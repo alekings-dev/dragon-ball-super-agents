@@ -2,7 +2,7 @@
 
 [Español](README.md) · **English**
 
-A team of agents for [Claude Code](https://claude.com/claude-code) (and Cursor) starring Dragon Ball Super characters. Hit, the lead, picks up a Linear issue, splits it among ten specialists, reviews what they hand back, opens the PR and merges it. Meanwhile you can watch the team at work on a map in your browser and hear each character when they deliver.
+A team of agents for [Claude Code](https://claude.com/claude-code), Cursor and [OpenCode](https://opencode.ai) starring Dragon Ball Super characters. Hit, the lead, picks up a Linear issue, splits it among ten specialists, reviews what they hand back, opens the PR and merges it. Meanwhile you can watch the team at work on a map in your browser and hear each character when they deliver.
 
 ![Team map: one room per specialist, Hit in the middle and the «En vivo» (live) feed](docs/mapa.jpg)
 
@@ -12,12 +12,12 @@ A team of agents for [Claude Code](https://claude.com/claude-code) (and Cursor) 
 
 ## What's inside
 
-- **10 specialist agents** (`agents/`), invoked as `equipo-dbs:<role>`.
-- **`resolver-issue` skill:** Hit picks up an issue («toma la issue ABC-12», "take issue ABC-12"), clarifies the goal and makes a plan. He delegates in parallel, asks for security, QA (with an e2e regression run) and design reviews, opens the PR and merges it once everything is green.
+- **10 specialist agents** (`agents/`), invoked as `equipo-dbs:<role>` in Claude Code/Cursor and `equipo-dbs/<role>` in OpenCode.
+- **`resolver-issue` skill:** Hit picks up an issue («toma la issue ABC-12», "take issue ABC-12", or `/resolver-issue ABC-12` in OpenCode), clarifies the goal and makes a plan. He delegates in parallel, asks for security, QA (with an e2e regression run) and design reviews, opens the PR and merges it once everything is green.
 - **Map** (`mapa` skill): one room per specialist with their sprite. When Hit delegates, the character walks to their room; when they deliver, they walk back to the plaza. A live feed runs alongside.
-- **Panel** (`/equipo`): in the terminal, who is working, on what and for how long, with pixel-art avatars.
+- **Panel** (`/equipo`): in the Claude Code terminal, who is working, on what and for how long, with pixel-art avatars. In the OpenCode TUI it shows the same with the team's emoticons.
 - **Voices:** each character says their line when they finish and shouts when they transform. They take turns and never talk over each other.
-- **Transformations:** Hit tunes each specialist's power to the task's difficulty. **Super Saiyan** = `model: opus`. **Super Saiyan Blue** = `opus` with `effort: high`.
+- **Transformations:** Hit tunes each specialist's power to the task's difficulty. **Super Saiyan** = `model: opus`. **Super Saiyan Blue** = `opus` with `effort: high` (in OpenCode, `provider/model#high`).
 
 | Role | Character | What for |
 | --- | --- | --- |
@@ -34,12 +34,12 @@ A team of agents for [Claude Code](https://claude.com/claude-code) (and Cursor) 
 
 ## Requirements
 
-- Claude Code (or Cursor, without the map, panel or voices).
+- Claude Code, Cursor or OpenCode 2.3 or newer. Cursor has no map, panel or voices; in OpenCode the panel is part of the TUI and has no pixel-art avatars.
 - `git` and an authenticated [`gh`](https://cli.github.com/), for PRs.
 - Optional:
   - **Linear** MCP server, to read and update issues. Without it, describe the task in the chat.
   - **CodeGraph**, used by the architect when available.
-  - **Node 23.6 or newer** and `jq`, for the map.
+  - **Node 23.6 or newer** for the map; `jq` for the Claude Code hooks and the voices.
   - **macOS**, for the voices (`afplay` and `say`); on other systems the plugin works silently.
 
 No keys or extra accounts needed: the audio files ship with the repo.
@@ -74,10 +74,20 @@ Restart Cursor and check that it shows up under **Settings → Plugins**. To upd
 
 The first time you use `resolver-issue` in a repo, Hit runs `configurar-modelos`. It suggests one model per tier (Opus for Beerus and Frieza; Sonnet for the implementers, QA, product and design; Haiku for the writer) and writes `.cursor/agents/<role>.md`. Cursor silently ignores model IDs it doesn't recognize, so the skill only uses the ones you confirm.
 
+### OpenCode
+
+The repo is also an OpenCode V2 plugin (2.3 or newer):
+
+```sh
+opencode plugin add github:alekings-dev/dragon-ball-super-agents
+```
+
+On load it installs any missing agents into `~/.config/opencode/agents/equipo-dbs/` and reloads the agent list. The commands are `/resolver-issue ABC-12`, `/mapa`, `/configurar-modelos` and `/equipo` (TUI panel). For a local directory install, a different agent destination or model changes, see [docs/opencode.md](docs/opencode.md).
+
 ## Getting started
 
 1. In your repo, create `.claude/equipo/proyecto.md` with what's specific to your project. You can use the [template](#proyectomd-template). The team is generic: everything repo-specific goes in that file.
-2. Ask Claude: «toma la issue ABC-12» ("take issue ABC-12") or `/equipo-dbs:resolver-issue ABC-12`.
+2. Ask Claude: «toma la issue ABC-12» ("take issue ABC-12") or `/equipo-dbs:resolver-issue ABC-12`. In OpenCode: `/resolver-issue ABC-12`.
 3. To watch the team, ask «abre el mapa del equipo» ("open the team map") or run `node scripts/visor.mjs` from the plugin folder and open <http://localhost:4321>.
 
 What each role learns is saved in `.claude/equipo/bitacora/<role>.md` and read in the following issues. Commit `.claude/equipo/` along with your code.
@@ -124,7 +134,7 @@ Own patterns and folders. (Same for other roles if needed.)
 
 ### Map
 
-`hooks/evento.sh` logs every delegation by Hit (`PreToolUse` on Agent) and every delivery (`SubagentStop`) to `~/.claude/equipo-dbs/eventos.jsonl`. The file trims itself to the last 500 lines and never leaves your machine.
+`hooks/evento.sh` logs every delegation by Hit (`PreToolUse` on Agent) and every delivery (`SubagentStop`) to `~/.claude/equipo-dbs/eventos.jsonl`. In OpenCode the plugin writes it in the same format (no `jq` needed). The file trims itself to the last 500 lines and never leaves your machine.
 
 `scripts/visor.mjs` serves `visor/` at `http://localhost:4321` and streams the events over SSE. It only listens on `127.0.0.1`. Names, colors, lines and transformations come from `hooks/equipo.ts`, the same file the panel uses.
 
@@ -135,7 +145,7 @@ sh hooks/evento.test.sh         # hook test
 
 ### Voices
 
-`hooks/agente-termina.sh` (`SubagentStop` and `Stop` hooks) plays each character's line when they deliver. Hit speaks when his reply carries the `(⌐■_■) Hit` signature. If the report contains a blocker, such as a **Bloquea** finding or new QA failures, the alert version plays. `hooks/transformacion.sh` makes the character shout when they come in transformed.
+`hooks/agente-termina.sh` (`SubagentStop` and `Stop` hooks) plays each character's line when they deliver. Hit speaks when his reply carries the `(⌐■_■) Hit` signature. If the report contains a blocker, such as a **Bloquea** finding or new QA failures, the alert version plays. `hooks/transformacion.sh` makes the character shout when they come in transformed. In OpenCode the plugin calls these same scripts when each child session finishes.
 
 The hooks run in parallel, so `hooks/turno.sh` gives the floor to one voice at a time with a lock in `$TMPDIR`: nobody talks over anybody, not even Hit. Test: `sh hooks/turno.test.sh`.
 
@@ -149,7 +159,7 @@ Without audio files, the plugin falls back to the system voice (`say`).
 
 ### Avatars and sprites
 
-- **Panel avatars:** original pixel art (16×16), generated by `scripts/generar-avatares.py` into `hooks/avatares.ts`. They render in terminals with graphics support (Kitty, iTerm2, WezTerm, Ghostty); elsewhere the character's emoticon is shown.
+- **Panel avatars:** original pixel art (16×16), generated by `scripts/generar-avatares.py` into `hooks/avatares.ts`. They render in terminals with graphics support (Kitty, iTerm2, WezTerm, Ghostty); elsewhere the character's emoticon is shown. Claude Code only; the OpenCode panel always uses the emoticon.
 - **Map characters:** fan-made sprites. `scripts/importar-sprites.py` removes their background and builds one sheet per role (idle, walk, aura, deliver, fall); requires Pillow.
 - **Map backgrounds:** AI-generated illustrations, in `visor/fondos/`.
 
