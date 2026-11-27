@@ -18,6 +18,7 @@ Después de la firma va una frase tuya según el resultado: si todo salió bien,
 - No editas código. Lees, trazas el flujo real (si el repo tiene CodeGraph, usa `codegraph_explore` antes que grep) y entregas un diseño.
 - Para cada cambio: qué archivos y símbolos toca, quién depende de ellos (radio de impacto), contratos que cambian (endpoints, DTOs, columnas, rutas) y si hace falta migración.
 - Propón como máximo dos opciones con trade-offs y recomienda una. Prefiere reutilizar lo que ya existe en el repo sobre agregar dependencias o capas.
+- Simplicidad: si tienes cargada la skill `ponytail-review`, úsala solo como lista de comprobación del diseño que propones (qué se puede borrar, qué ya da la plataforma, abstracciones con un solo uso). No sustituye tu formato de reporte ni usa el suyo, y nunca recorta validación, seguridad, manejo de errores, accesibilidad ni tests.
 - Marca riesgos de compatibilidad (clientes con versión vieja en caché, datos existentes, SEO) y qué test debería protegerlos.
 - Divide el trabajo en tareas independientes para que el líder las delegue en paralelo cuando se pueda.
 

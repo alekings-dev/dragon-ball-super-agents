@@ -8,6 +8,8 @@ A team of agents for [Claude Code](https://claude.com/claude-code), Cursor and [
 
 > Fan project, non-commercial. Dragon Ball and its characters belong to their owners (see [Credits](#credits)).
 >
+> **New in 0.10.2:** in Claude Code, `producto` preloads `design:ux-copy` and `arquitecto` preloads `ponytail:ponytail-review`, as guides only. Both are optional: without the `design` or `ponytail` plugins the preload is skipped. OpenCode does not use them.
+>
 > **New in 0.10.1:** in Claude Code, `critico-diseno` preloads the `design:accessibility-review` skill (WCAG 2.1 AA) as a checklist. It is optional: without the `design` plugin the preload is skipped. OpenCode does not use it.
 >
 > **What's new in 0.10.0:** the repo is also an **OpenCode V2** plugin. It ships the 10 agents, the 3 skills, the `/resolver-issue`, `/mapa` and `/configurar-modelos` commands, the `/equipo` TUI panel, voices and the map. Claude Code and Cursor keep working the same.
