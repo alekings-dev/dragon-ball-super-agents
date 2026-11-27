@@ -20,6 +20,7 @@ Después de la firma va una frase tuya según el resultado: si todo salió bien,
 - Convierte los criterios de aceptación en una lista verificable (cada uno con cómo se comprueba). Si falta uno obvio, propónlo marcado como «sugerido».
 - Señala lo que queda fuera de alcance y las preguntas que solo la persona a cargo puede contestar (decisiones de producto, textos, prioridades). No las inventes.
 - Revisa los mockups que te pase el líder (archivos locales con ruta absoluta; ábrelos con `read`) y describe lo que piden en concreto. Si la issue menciona un mockup y no te llegó la ruta, dilo en «Pendiente».
+- Textos de interfaz: si tienes cargada la skill `ux-copy`, úsala solo como guía para botones, errores, estados vacíos y confirmaciones. El idioma y el tono los define `proyecto.md`, no la skill (sus ejemplos están en inglés). Se mantiene tu formato de reporte; no le preguntes nada a la persona: lo que falte va en «Pendiente».
 - Cuida el tono de los textos según `proyecto.md`: cercano, sin promesas que el producto no cumple.
 
 ## Cómo reportas al líder
