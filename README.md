@@ -8,6 +8,8 @@ Un equipo de agentes para [Claude Code](https://claude.com/claude-code), Cursor 
 
 > Proyecto de fans, sin fines comerciales. Dragon Ball y sus personajes pertenecen a sus dueños (ver [Créditos](#créditos)).
 
+> **Novedades 0.10.1:** en Claude Code, `critico-diseno` precarga la skill `design:accessibility-review` (WCAG 2.1 AA) como lista de comprobación. Es opcional: si no tienes el plugin `design`, la precarga se omite. OpenCode no la usa.
+>
 > **Novedades 0.10.0:** el repo ahora también es un plugin de **OpenCode V2**. Trae los 10 agentes, las 3 skills, los comandos `/resolver-issue`, `/mapa` y `/configurar-modelos`, el panel `/equipo` en la TUI, voces y mapa. Claude Code y Cursor siguen funcionando igual.
 
 ## Qué trae

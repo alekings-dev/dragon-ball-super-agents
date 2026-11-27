@@ -1,6 +1,6 @@
 {
   "name": "equipo-dbs",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Equipo de agentes Dragon Ball Super para OpenCode, Claude Code y Cursor: líder, especialistas, panel, voces y mapa",
   "type": "module",
   "license": "MIT",
